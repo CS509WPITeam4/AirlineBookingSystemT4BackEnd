@@ -48,3 +48,19 @@ INSERT INTO locations (iata_code, city_name, country, airport_name) VALUES
                                                                         ('PBI', 'West Palm Beach', 'United States', 'Palm Beach International Airport'),
                                                                         ('RSW', 'Fort Myers', 'United States', 'Southwest Florida International Airport'),
                                                                         ('OKC', 'Oklahoma City', 'United States', 'Will Rogers World Airport');
+-- need to fix image urls
+INSERT INTO flights (
+    airline_name, airline_logo_url, flight_number, departure_airport, arrival_airport,
+    departure_terminal, arrival_terminal, departure_gate, arrival_gate, departure_time,
+    arrival_time, flight_duration, ticket_price
+) VALUES
+      ('Delta Airlines', 'https://example.com/delta.png', 'DL245', 'JFK', 'LAX', '4', '6', 'B12', 'C34', '2025-04-10 08:00:00', '2025-04-10 11:30:00', '06:30:00', 320.00),
+      ('American Airlines', 'https://example.com/aa.png', 'AA789', 'ORD', 'MIA', '2', 'D', 'A5', 'D12', '2025-04-12 14:00:00', '2025-04-12 18:00:00', '04:00:00', 280.00),
+      ('United Airlines', 'https://example.com/ua.png', 'UA102', 'SFO', 'SEA', '3', 'B', 'C7', 'B4', '2025-04-15 09:30:00', '2025-04-15 11:30:00', '02:00:00', 150.00),
+      ('Southwest Airlines', 'https://example.com/sw.png', 'SW555', 'DEN', 'LAS', '1', 'E', 'D3', 'A20', '2025-04-18 12:45:00', '2025-04-18 14:15:00', '01:30:00', 130.00),
+      ('JetBlue Airways', 'https://example.com/jb.png', 'B6201', 'BOS', 'ATL', 'C', 'F', 'B8', 'C22', '2025-04-20 07:15:00', '2025-04-20 10:15:00', '03:00:00', 210.00),
+      ('Alaska Airlines', 'https://example.com/ak.png', 'AS330', 'SEA', 'SFO', 'N', '3', 'A10', 'C14', '2025-04-22 15:00:00', '2025-04-22 17:15:00', '02:15:00', 175.00),
+      ('Spirit Airlines', 'https://example.com/spirit.png', 'NK905', 'DFW', 'ORD', 'E', 'H', 'B2', 'F20', '2025-04-25 06:30:00', '2025-04-25 08:45:00', '02:15:00', 95.00),
+      ('Frontier Airlines', 'https://example.com/frontier.png', 'F9123', 'PHX', 'DEN', 'D', 'A', 'C15', 'B12', '2025-04-27 10:20:00', '2025-04-27 12:45:00', '01:25:00', 110.00),
+      ('Hawaiian Airlines', 'https://example.com/ha.png', 'HA456', 'LAX', 'HNL', '5', 'G', 'D18', 'E22', '2025-04-30 09:00:00', '2025-04-30 12:30:00', '05:30:00', 400.00),
+      ('British Airways', 'https://example.com/ba.png', 'BA212', 'BOS', 'LHR', 'E', '5', 'A4', 'C16', '2025-05-02 18:00:00', '2025-05-03 06:30:00', '07:30:00', 750.00);

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    //private int id = 0;
 
     public User registerUser(UserDTO userDTO) {
         // checks if email already exists
@@ -18,7 +17,6 @@ public class UserService {
         // saves new user (id )
         User user = new User(userDTO.getUsername(), userDTO.getEmail(), userDTO.getPassword());
         userRepository.save(user);
-        //id++;
         return userRepository.save(user);
     }
 }
