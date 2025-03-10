@@ -82,26 +82,12 @@ INSERT INTO locations (iata_code, city_name, country, airport_name) VALUES
                                                                         ('MTJ', 'Montrose', 'United States', 'Montrose Regional Airport'),
                                                                         ('ECP', 'Panama City', 'United States', 'Northwest Florida Beaches International Airport'),
                                                                         ('PBI', 'West Palm Beach', 'United States', 'Palm Beach International Airport'),
+                                                                        ('RSW', 'Fort Myers', 'United States', 'Southwest Florida International Airport'),
+                                                                        ('OKC', 'Oklahoma City', 'United States', 'Will Rogers World Airport');
                                                                         ('GRR', 'Grand Rapids', 'United States', 'Gerald R. Ford International Airport'),
                                                                         ('SAV', 'Savannah', 'United States', 'Savannah/Hilton Head International Airport'),
                                                                         ('IAD', 'Washington', 'United States', 'Washington Dulles International Airport'),
                                                                         ('TUS', 'Tucson', 'United States', 'Tucson International Airport'),
                                                                         ('SLC', 'Salt Lake City', 'United States', 'Salt Lake City International Airport'),
                                                                         ('ALB', 'Albany', 'United States', 'Albany International Airport'),
-                                                                        ('CLE', 'Cleveland', 'United States', 'Cleveland Hopkins International Airport');
-
-INSERT INTO flights (
-    airline_name, airline_logo_url, flight_number, departure_airport, arrival_airport,
-    departure_terminal, arrival_terminal, departure_gate, arrival_gate, departure_time,
-    arrival_time, flight_duration, ticket_price
-) VALUES
-      ('Delta Airlines', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Delta_logo.svg/512px-Delta_logo.svg.png', 'DL245', 'JFK', 'LAX', '4', '6', 'B12', 'C34', '2025-04-10 08:00:00', '2025-04-10 11:30:00', '06:30:00', 320.00),
-      ('American Airlines', 'https://upload.wikimedia.org/wikipedia/en/thumb/2/23/American_Airlines_logo_2013.svg/220px-American_Airlines_logo_2013.svg.png', 'AA789', 'ORD', 'MIA', '2', 'D', 'A5', 'D12', '2025-04-12 14:00:00', '2025-04-12 18:00:00', '04:00:00', 280.00),
-      ('United Airlines', 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/United_Airlines_Logo.svg/464px-United_Airlines_Logo.svg.png?20250205015803', 'UA102', 'SFO', 'SEA', '3', 'B', 'C7', 'B4', '2025-04-15 09:30:00', '2025-04-15 11:30:00', '02:00:00', 150.00),
-      ('Southwest Airlines', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Southwest_Airlines_logo_2014.svg/220px-Southwest_Airlines_logo_2014.svg.png', 'SW555', 'DEN', 'LAS', '1', 'E', 'D3', 'A20', '2025-04-18 12:45:00', '2025-04-18 14:15:00', '01:30:00', 130.00),
-      ('JetBlue Airways', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/JetBlue_Airways_Logo.svg/585px-JetBlue_Airways_Logo.svg.png', 'B6201', 'BOS', 'ATL', 'C', 'F', 'B8', 'C22', '2025-04-20 07:15:00', '2025-04-20 10:15:00', '03:00:00', 210.00),
-      ('Alaska Airlines', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Alaska_Airlines_logo.svg/220px-Alaska_Airlines_logo.svg.png', 'AS330', 'SEA', 'SFO', 'N', '3', 'A10', 'C14', '2025-04-22 15:00:00', '2025-04-22 17:15:00', '02:15:00', 175.00),
-      ('Spirit Airlines', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Spirit_Airlines_logo.svg/220px-Spirit_Airlines_logo.svg.png', 'NK905', 'DFW', 'ORD', 'E', 'H', 'B2', 'F20', '2025-04-25 06:30:00', '2025-04-25 08:45:00', '02:15:00', 95.00),
-      ('Frontier Airlines', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Frontier_Airlines_logo.svg/220px-Frontier_Airlines_logo.svg.png', 'F9123', 'PHX', 'DEN', 'D', 'A', 'C15', 'B12', '2025-04-27 10:20:00', '2025-04-27 12:45:00', '01:25:00', 110.00),
-      ('Hawaiian Airlines', 'https://img.s-hawaiianairlines.com/static/images/logos/ha/logo.png?version=7aef&sc_lang=en&w=1070&hash=D9A4E14CD351CBD3B5BD0A9427D30662A96199DD', 'HA456', 'LAX', 'HNL', '5', 'G', 'D18', 'E22', '2025-04-30 09:00:00', '2025-04-30 12:30:00', '05:30:00', 400.00),
-      ('British Airways', 'https://upload.wikimedia.org/wikipedia/en/thumb/4/42/British_Airways_Logo.svg/220px-British_Airways_Logo.svg.png', 'BA212', 'BOS', 'LHR', 'E', '5', 'A4', 'C16', '2025-05-02 18:00:00', '2025-05-03 06:30:00', '07:30:00', 750.00);
+                                                                        ('CLE', 'Cleveland', 'United States', 'Cleveland Hopkins International Airport')
