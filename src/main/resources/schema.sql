@@ -29,21 +29,3 @@ CREATE TABLE IF NOT EXISTS reservations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
-
-CREATE TABLE IF NOT EXISTS flights (
-    flight_id INT AUTO_INCREMENT PRIMARY KEY,
-    airline_name VARCHAR(100) NOT NULL,
-    airline_logo_url VARCHAR(255),
-    flight_number VARCHAR(20) NOT NULL,
-    departure_airport VARCHAR(3) NOT NULL,
-    arrival_airport VARCHAR(3) NOT NULL,
-    departure_terminal VARCHAR(10),
-    arrival_terminal VARCHAR(10),
-    departure_gate VARCHAR(10),
-    arrival_gate VARCHAR(10),
-    departure_time TIMESTAMP NOT NULL,
-    arrival_time TIMESTAMP NOT NULL,
-    flight_duration TIME NOT NULL,
-    ticket_price DECIMAL(10,2) NOT NULL
-);
-

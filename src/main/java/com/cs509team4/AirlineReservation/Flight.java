@@ -4,75 +4,68 @@ import jakarta.persistence.*;
 
 // Flight class with flight information
 @Entity
-@Table(name = "flights")
-public class Flight {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Flight {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "flight_id")
-    private int flightId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_seq")
+    @SequenceGenerator(name = "flight_seq", sequenceName = "flight_sequence", allocationSize = 1)
+    @Column(name = "Id")
+    private int id;
 
-    @Column(name = "airline_name")
-    private String airlineName;
+    @Column(name = "DepartDateTime")
+    private String departDateTime;
 
-    @Column(name = "airline_logo_url")
-    private String airlineLogoUrl;
+    @Column(name = "ArriveDateTime")
+    private String arriveDateTime;
 
-    @Column(name = "flight_number")
+    @Column(name = "DepartAirport")
+    private String departAirport;
+
+    @Column(name = "ArriveAirport")
+    private String arriveAirport;
+
+    @Column(name = "FlightNumber")
     private String flightNumber;
-
-    @Column(name = "departure_airport")
-    private String departureAirport;
-
-    @Column(name = "arrival_airport")
-    private String arrivalAirport;
-
-    @Column(name = "departure_terminal")
-    private String departureTerminal;
-
-    @Column(name = "arrival_terminal")
-    private String arrivalTerminal;
-
-    @Column(name = "departure_gate")
-    private String departureGate;
-
-    @Column(name = "arrival_gate")
-    private String arrivalGate;
-
-    @Column(name = "departure_time")
-    private String departureTime;
-
-    @Column(name = "arrival_time")
-    private String arrivalTime;
-
-    @Column(name = "flight_duration")
-    private String flightDuration;
-
-    @Column(name = "ticket_price")
-    private double ticketPrice;
 
     // Getters and Setters (needed for connecting to database)
     public int getFlightId() {
-        return flightId;
+        return id;
     }
 
     public void setFlightId(int flightId) {
-        this.flightId = flightId;
+        this.id = flightId;
     }
 
-    public String getAirlineName() {
-        return airlineName;
+    public String getDepartDateTime() {
+        return departDateTime;
     }
 
-    public void setAirlineName(String airlineName) {
-        this.airlineName = airlineName;
+    public void setDepartDateTime(String departDateTime) {
+        this.departDateTime = departDateTime;
     }
 
-    public String getAirlineLogoUrl() {
-        return airlineLogoUrl;
+    public String getArriveDateTime() {
+        return arriveDateTime;
     }
 
-    public void setAirlineLogoUrl(String airlineLogoUrl) {
-        this.airlineLogoUrl = airlineLogoUrl;
+    public void setArriveDateTime(String arriveDateTime) {
+        this.arriveDateTime = arriveDateTime;
+    }
+
+    public String getDepartAirport() {
+        return departAirport;
+    }
+
+    public void setDepartAirport(String departAirport) {
+        this.departAirport = departAirport;
+    }
+
+    public String getArriveAirport() {
+        return arriveAirport;
+    }
+
+    public void setArriveAirport(String arriveAirport) {
+        this.arriveAirport = arriveAirport;
     }
 
     public String getFlightNumber() {
@@ -83,85 +76,14 @@ public class Flight {
         this.flightNumber = flightNumber;
     }
 
-    public String getDepartureAirport() {
-        return departureAirport;
-    }
-
-    public void setDepartureAirport(String departureAirport) {
-        this.departureAirport = departureAirport;
-    }
-
-    public String getArrivalAirport() {
-        return arrivalAirport;
-    }
-
-    public void setArrivalAirport(String arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
-    }
-
-    public String getDepartureTerminal() {
-        return departureTerminal;
-    }
-
-    public void setDepartureTerminal(String departureTerminal) {
-        this.departureTerminal = departureTerminal;
-    }
-
-    public String getArrivalTerminal() {
-        return arrivalTerminal;
-    }
-
-    public void setArrivalTerminal(String arrivalTerminal) {
-        this.arrivalTerminal = arrivalTerminal;
-    }
-
-    public String getDepartureGate() {
-        return departureGate;
-    }
-
-    public void setDepartureGate(String departureGate) {
-        this.departureGate = departureGate;
-    }
-
-    public String getArrivalGate() {
-        return arrivalGate;
-    }
-
-    public void setArrivalGate(String arrivalGate) {
-        this.arrivalGate = arrivalGate;
-    }
-
-    public String getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(String departureTime) {
-        this.departureTime = departureTime;
-    }
-
-    public String getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public void setArrivalTime(String arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public String getFlightDuration() {
-        return flightDuration;
-    }
-
-    public void setFlightDuration(String flightDuration) {
-        this.flightDuration = flightDuration;
-    }
-
-    public double getTicketPrice() {
-        return ticketPrice;
-    }
-
-    public void setTicketPrice(double ticketPrice) {
-        this.ticketPrice = ticketPrice;
-    }
-
     public Flight() {}
+
+    public Flight(int id, String flightNumber, String departureAirport, String arrivalAirport, String departureTime, String arrivalTime) {
+        this.id = id;
+        this.departDateTime = flightNumber;
+        this.arriveDateTime = departureAirport;
+        this.departAirport = arrivalAirport;
+        this.arriveAirport = departureTime;
+        this.flightNumber = arrivalTime;
+    }
 }

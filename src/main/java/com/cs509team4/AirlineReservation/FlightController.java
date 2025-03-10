@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,21 +16,29 @@ import java.util.Optional;
 public class FlightController {
 
     @Autowired
-    private FlightService flightService;
+    private DeltaRepository deltaRepository;
 
-    // for all flights
-    @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights() {
-        List<Flight> flights = flightService.getAllFlights();
-        return ResponseEntity.ok(flights);
-    }
+    @Autowired
+    private SouthwestRepository southwestRepository;
 
-    // for a specific flight
-    // GET /api/flights/{flightID}
-    @GetMapping("/{flightId}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable int flightId) {
-        Optional<Flight> flight = flightService.getFlightById(flightId);
-        return flight.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    // Search for flights based on departure and arrival locations
+    @GetMapping("/search")
+    public ResponseEntity<List<Flight>> searchFlights(
+            @RequestParam(required = false) String departAirport,
+            @RequestParam(required = false) String arriveAirport) {
+
+        if (departAirport == null || arriveAirport == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Fetch flights from Delta and Southwest repositories
+        List<Flight> deltaFlights = deltaRepository.search(departAirport, arriveAirport);
+        List<Flight> southwestFlights = southwestRepository.search(departAirport, arriveAirport);
+
+        // Combine the two lists into one
+        List<Flight> allFlights = new ArrayList<>();
+        allFlights.addAll(deltaFlights);
+        allFlights.addAll(southwestFlights);
+        return ResponseEntity.ok(allFlights);
     }
 }
