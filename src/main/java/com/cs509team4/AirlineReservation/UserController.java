@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 // connects backend to frontend
-@CrossOrigin(origins = "http://localhost:8080") // change to whatever fronted localhost is
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,6 +21,16 @@ public class UserController {
             return ResponseEntity.ok("User registered successfully!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
+        try {
+            String token = userService.authenticateUser(userDTO);
+            return ResponseEntity.ok(token);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
         }
     }
 }
