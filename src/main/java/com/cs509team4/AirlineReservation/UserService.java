@@ -19,4 +19,17 @@ public class UserService {
         userRepository.save(user);
         return userRepository.save(user);
     }
+
+    public String authenticateUser(UserDTO userDTO) {
+        String identifier = (userDTO.getUsername() != null && !userDTO.getUsername().isEmpty())
+                ? userDTO.getUsername()
+                : userDTO.getEmail();
+
+        User user = userRepository.findByUsernameOrEmail(identifier);
+
+        if (user != null && user.getPassword().equals(userDTO.getPassword())) {
+            return "mock-jwt-token";
+        }
+        throw new RuntimeException("Invalid username/email or password.");
+    }
 }

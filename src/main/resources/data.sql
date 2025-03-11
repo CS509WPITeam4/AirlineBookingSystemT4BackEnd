@@ -33,7 +33,6 @@ INSERT INTO locations (iata_code, city_name, country, airport_name) VALUES
                                                                         ('LAX', 'Los Angeles', 'United States', 'Los Angeles International Airport'),
                                                                         ('BUR', 'Burbank', 'United States', 'Hollywood Burbank Airport'),
                                                                         ('MDT', 'Harrisburg', 'United States', 'Harrisburg International Airport'),
-                                                                        ('RSW', 'Fort Myers', 'United States', 'Southwest Florida International Airport'),
                                                                         ('IND', 'Indianapolis', 'United States', 'Indianapolis International Airport'),
                                                                         ('ELP', 'El Paso', 'United States', 'El Paso International Airport'),
                                                                         ('SNA', 'Santa Ana', 'United States', 'John Wayne Airport'),
@@ -83,11 +82,10 @@ INSERT INTO locations (iata_code, city_name, country, airport_name) VALUES
                                                                         ('ECP', 'Panama City', 'United States', 'Northwest Florida Beaches International Airport'),
                                                                         ('PBI', 'West Palm Beach', 'United States', 'Palm Beach International Airport'),
                                                                         ('RSW', 'Fort Myers', 'United States', 'Southwest Florida International Airport'),
-                                                                        ('OKC', 'Oklahoma City', 'United States', 'Will Rogers World Airport');
                                                                         ('GRR', 'Grand Rapids', 'United States', 'Gerald R. Ford International Airport'),
                                                                         ('SAV', 'Savannah', 'United States', 'Savannah/Hilton Head International Airport'),
                                                                         ('IAD', 'Washington', 'United States', 'Washington Dulles International Airport'),
                                                                         ('TUS', 'Tucson', 'United States', 'Tucson International Airport'),
                                                                         ('SLC', 'Salt Lake City', 'United States', 'Salt Lake City International Airport'),
                                                                         ('ALB', 'Albany', 'United States', 'Albany International Airport'),
-                                                                        ('CLE', 'Cleveland', 'United States', 'Cleveland Hopkins International Airport')
+                                                                        ('CLE', 'Cleveland', 'United States', 'Cleveland Hopkins International Airport');

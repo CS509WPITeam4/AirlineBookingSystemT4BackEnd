@@ -16,9 +16,6 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Version
-    private Integer version;
-
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
