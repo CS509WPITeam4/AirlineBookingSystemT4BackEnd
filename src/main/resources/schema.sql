@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS flights;
+DROP TABLE IF EXISTS `southwests`;
+DROP TABLE IF EXISTS `deltas`;
 
 CREATE TABLE IF NOT EXISTS users (
                                      id BIGINT AUTO_INCREMENT PRIMARY KEY,
