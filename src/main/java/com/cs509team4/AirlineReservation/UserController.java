@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173") // Adjust to your frontend
 
-// connects backend to frontend
-@CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    // Register new users
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody UserDTO userDTO) {
         try {
@@ -24,13 +24,14 @@ public class UserController {
         }
     }
 
+    // User login
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         try {
-            String token = userService.authenticateUser(userDTO);
-            return ResponseEntity.ok(token);
+            String token = userService.authenticate(request.getEmail(), request.getPassword());
+            return ResponseEntity.ok(new AuthResponse(token));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(e.getMessage());
+            return ResponseEntity.status(401).body(new AuthResponse(null, "Invalid email or password"));
         }
     }
 }

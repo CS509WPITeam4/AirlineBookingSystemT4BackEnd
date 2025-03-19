@@ -2,11 +2,15 @@ package com.cs509team4.AirlineReservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public User registerUser(UserDTO userDTO) {
         // checks if email already exists
@@ -20,16 +24,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String authenticateUser(UserDTO userDTO) {
-        String identifier = (userDTO.getUsername() != null && !userDTO.getUsername().isEmpty())
-                ? userDTO.getUsername()
-                : userDTO.getEmail();
-
-        User user = userRepository.findByUsernameOrEmail(identifier);
-
-        if (user != null && user.getPassword().equals(userDTO.getPassword())) {
-            return "mock-jwt-token";
+    // User Authentication (Login)
+    public String authenticate(String email, String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
         }
-        throw new RuntimeException("Invalid username/email or password.");
+
+        User user = userOptional.get();
+
+        // Check password validity
+        if (!password.equals(user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        // Generate JWT token upon successful login
+        return jwtUtil.generateToken(user);
     }
+
 }
+

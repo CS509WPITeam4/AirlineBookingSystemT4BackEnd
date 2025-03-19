@@ -24,6 +24,10 @@ dependencies {
 	implementation("mysql:mysql-connector-java:8.0.33")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 }
 
 tasks.withType<Test> {
