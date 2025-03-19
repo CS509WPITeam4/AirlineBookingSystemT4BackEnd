@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173") // Adjust to your frontend
+
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
@@ -33,5 +34,4 @@ public class UserController {
             return ResponseEntity.status(401).body(new AuthResponse(null, "Invalid email or password"));
         }
     }
-
 }

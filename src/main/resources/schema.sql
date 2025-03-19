@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS flights;
+DROP TABLE IF EXISTS `southwests`;
+DROP TABLE IF EXISTS `deltas`;
 
 CREATE TABLE IF NOT EXISTS users (
                                      id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -29,3 +30,24 @@ CREATE TABLE IF NOT EXISTS reservations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
+
+CREATE TABLE `deltas` (
+                          `Id` int NOT NULL AUTO_INCREMENT,
+                          `DepartDateTime` datetime NOT NULL,
+                          `ArriveDateTime` datetime NOT NULL,
+                          `DepartAirport` varchar(255) NOT NULL,
+                          `ArriveAirport` varchar(255) NOT NULL,
+                          `FlightNumber` varchar(255) NOT NULL,
+                          PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `southwests` (
+                              `Id` int NOT NULL AUTO_INCREMENT,
+                              `DepartDateTime` datetime NOT NULL,
+                              `ArriveDateTime` datetime NOT NULL,
+                              `DepartAirport` varchar(255) NOT NULL,
+                              `ArriveAirport` varchar(255) NOT NULL,
+                              `FlightNumber` varchar(255) NOT NULL,
+                              PRIMARY KEY (`Id`)
+);
+
