@@ -41,4 +41,27 @@ public class FlightController {
         allFlights.addAll(southwestFlights);
         return ResponseEntity.ok(allFlights);
     }
+
+    @GetMapping("/details")
+    public ResponseEntity<Flight> getFlight(
+            @RequestParam(required = false) int id,
+            @RequestParam(required = false) String flightNum) {
+
+        if (flightNum == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String airline = flightNum.substring(0, 2);
+        Flight flight;
+        if(airline.equals("DL")) {
+            flight = deltaRepository.getFlight(id);
+        } else if (airline.equals("WN")) {
+            flight = southwestRepository.getFlight(id);
+        } else {
+            System.out.println("Invalid Flight Number");
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(flight);
+    }
 }

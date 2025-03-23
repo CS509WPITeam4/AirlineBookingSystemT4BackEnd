@@ -11,4 +11,6 @@ import java.util.List;
 public interface DeltaRepository extends JpaRepository<Flight, Integer> {
     @Query("SELECT f FROM DeltaFlight f WHERE f.departAirport = :departAirport AND f.arriveAirport = :arriveAirport")
     List<Flight> search(String departAirport, String arriveAirport);
+    @Query("SELECT f FROM DeltaFlight f WHERE f.id = :id")
+    Flight getFlight(int id);
 }
