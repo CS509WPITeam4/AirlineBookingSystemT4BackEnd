@@ -10,7 +10,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
-
+@Component
 public class JwtUtil {
     private final String SECRET_KEY = "CS509Team4";
     private final long EXPIRATION_TIME = 86400000; // 1 day
