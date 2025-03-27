@@ -8,20 +8,29 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final String SECRET_KEY = "CS509Team4";
+    private final String SECRET_KEY = "CS509Team4SuperSecretKeyForJWTGeneration123456"; // needs to be at least 256 bits long
     private final long EXPIRATION_TIME = 86400000; // 1 day
+    SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
 
     public String generateToken(User user) {
-        return Jwts.builder()
-                .setSubject(user.getEmail())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+        try {
+            System.out.println("Generating token for user: " + user.getEmail());
+            return Jwts.builder()
+                    .setSubject(user.getEmail())
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                    .signWith(key)
+                    .compact();
+        } catch (Exception e) {
+            System.out.println("Error generating token: " + e.getMessage());
+            throw new RuntimeException("Token generation failed");
+        }
     }
 
     public boolean validateToken(String token) {

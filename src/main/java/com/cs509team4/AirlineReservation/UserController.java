@@ -27,11 +27,13 @@ public class UserController {
     // User login
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        System.out.println("Received login request: identifier=" + request.getIdentifier() + ", password=" + request.getPassword());
         try {
-            String token = userService.authenticate(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok(new AuthResponse(token));
+            String token = userService.authenticate(request.getIdentifier(), request.getPassword());
+            User user = userService.getUserDetails(request.getIdentifier()).get();
+            return ResponseEntity.ok(new AuthResponse(token, user));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(new AuthResponse(null, "Invalid email or password"));
+            return ResponseEntity.status(401).body(new AuthResponse(null, null));
         }
     }
 }
