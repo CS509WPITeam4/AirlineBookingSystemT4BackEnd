@@ -25,21 +25,39 @@ public class UserService {
     }
 
     // User Authentication (Login)
-    public String authenticate(String email, String password) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
+    public String authenticate(String identifier, String password) {
+        System.out.println("0");
+        //Optional<User> userOptional = userRepository.findByEmail(email);
+        Optional<User> userOptional = userRepository.findByUsernameOrEmail(identifier);
+
+        System.out.println("1");
+
         if (userOptional.isEmpty()) {
+            System.out.println("Empty");
             throw new RuntimeException("User not found");
         }
 
         User user = userOptional.get();
 
+        System.out.println("2");
+
         // Check password validity
         if (!password.equals(user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
+        System.out.println("3");
+
+
+        System.out.println("USER ID " + user.getId());
 
         // Generate JWT token upon successful login
-        return jwtUtil.generateToken(user);
+        String token = jwtUtil.generateToken(user);
+        System.out.println("4");
+        return token;
+    }
+
+    public Optional<User> getUserDetails(String identifier) {
+        return userRepository.findByUsernameOrEmail(identifier);
     }
 
 }

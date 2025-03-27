@@ -2,17 +2,17 @@ package com.cs509team4.AirlineReservation;
 
 public class AuthResponse {
     private String token;
-    private String message;
+    private User user;
 
     public AuthResponse(String token) {
         this.token = token;
     }
 
-    public AuthResponse(String token, String message) {
+    public AuthResponse(String token, User user) {
         this.token = token;
-        this.message = message;
+        this.user = user;
     }
 
     public String getToken() { return token; }
-    public String getMessage() { return message; }
+    public User getUser() { return user; }
 }
