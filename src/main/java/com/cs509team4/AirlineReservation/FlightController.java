@@ -16,30 +16,57 @@ import java.util.Optional;
 public class FlightController {
 
     @Autowired
-    private DeltaRepository deltaRepository;
-
-    @Autowired
-    private SouthwestRepository southwestRepository;
+    private FlightRepository flightRepository;
 
     // Search for flights based on departure and arrival locations
     @GetMapping("/search")
-    public ResponseEntity<List<Flight>> searchFlights(
+    public ResponseEntity<List<FlightCardDTO>> searchFlights(
             @RequestParam(required = false) String departAirport,
-            @RequestParam(required = false) String arriveAirport) {
+            @RequestParam(required = false) String arriveAirport,
+            @RequestParam(required = false) java.time.LocalDateTime departDateTime) {
 
         if (departAirport == null || arriveAirport == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        // Fetch flights from Delta and Southwest repositories
-        List<Flight> deltaFlights = deltaRepository.search(departAirport, arriveAirport);
-        List<Flight> southwestFlights = southwestRepository.search(departAirport, arriveAirport);
+        List<FlightCardDTO> results = new ArrayList<>();
+        int numResults = 0;
+        int numLayovers = 1;
+        int MAX_RESULTS = 24;
 
-        // Combine the two lists into one
-        List<Flight> allFlights = new ArrayList<>();
-        allFlights.addAll(deltaFlights);
-        allFlights.addAll(southwestFlights);
-        return ResponseEntity.ok(allFlights);
+        // Direct flights first
+        List<Flight> directFlights = flightRepository.search(departAirport, arriveAirport);
+        for (Flight f : directFlights) {
+            if (numResults >= MAX_RESULTS) { break; }
+            List<Flight> list = new ArrayList<>();
+            list.add(f);
+            results.add(new FlightCardDTO(list));
+            numResults++;
+        }
+
+        // Layovers - search sequentially starting with 1, then 2, etc until MAX_RESULTS is reached or layovers hits 10
+        while(numResults <= MAX_RESULTS && numLayovers < 10) {
+            List<Object[]> layoverFlightsList = flightRepository.searchWithLayovers(departAirport, arriveAirport, numLayovers, MAX_RESULTS - numResults);
+            for (Object[] row : layoverFlightsList) {
+                if (numResults >= 100) break;
+
+                List<Flight> list = new ArrayList<>();
+                for(Object id : row) {
+                    Long flightIdLong = (Long) id;
+                    int flightId = flightIdLong.intValue();
+                    Flight f = flightRepository.getFlight(flightId);
+                    if(f != null) {
+                        list.add(f);
+                    }
+                }
+
+                results.add(new FlightCardDTO(list));
+                numResults++;
+            }
+            numLayovers++;
+        }
+
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping("/details")
@@ -51,16 +78,8 @@ public class FlightController {
             return ResponseEntity.badRequest().build();
         }
 
-        String airline = flightNum.substring(0, 2);
         Flight flight;
-        if(airline.equals("DL")) {
-            flight = deltaRepository.getFlight(id);
-        } else if (airline.equals("WN")) {
-            flight = southwestRepository.getFlight(id);
-        } else {
-            System.out.println("Invalid Flight Number");
-            return ResponseEntity.badRequest().build();
-        }
+        flight = flightRepository.getFlight(id);
 
         return ResponseEntity.ok(flight);
     }

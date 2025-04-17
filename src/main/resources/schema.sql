@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS `southwests`;
 DROP TABLE IF EXISTS `deltas`;
@@ -64,3 +65,15 @@ CREATE TABLE `southwests` (
                               `FlightNumber` varchar(255) NOT NULL,
                               PRIMARY KEY (`Id`)
 );
+
+CREATE OR REPLACE VIEW flights AS
+SELECT * FROM deltas
+UNION ALL
+SELECT
+CONVERT(Id + 20000, SIGNED) AS Id,
+DepartDateTime,
+ArriveDateTime,
+DepartAirport,
+ArriveAirport,
+FlightNumber
+FROM southwests;
