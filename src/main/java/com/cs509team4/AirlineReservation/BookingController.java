@@ -15,20 +15,17 @@ public class BookingController {
     private BookingRepository bookingRepository;
 
     @Autowired
-    private DeltaRepository deltaRepository;
-
-    @Autowired
-    private SouthwestRepository southwestRepository;
+    private FlightRepository flightRepository;
 
     @PostMapping
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
-        Optional<? extends Flight> deltaFlight = deltaRepository.findByFlightNumberAndDepartDateTime(
+        Optional<? extends Flight> flight = flightRepository.findByFlightNumberAndDepartDateTime(
                 booking.getFlightNumber(), booking.getDepartDateTime());
 
-        Optional<? extends Flight> southwestFlight = southwestRepository.findByFlightNumberAndDepartDateTime(
-                booking.getFlightNumber(), booking.getDepartDateTime());
+//        Optional<? extends Flight> southwestFlight = southwestRepository.findByFlightNumberAndDepartDateTime(
+//                booking.getFlightNumber(), booking.getDepartDateTime());
 
-        if (deltaFlight.isEmpty() && southwestFlight.isEmpty()) {
+        if (flight.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight not found");
         }
 
