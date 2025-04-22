@@ -1,51 +1,25 @@
 package com.cs509team4.AirlineReservation;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "bookings")
-public class Booking {
+public class BookingDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id") 
     private Long id;
-
-    @Column(name = "user_id") 
-    private Long userId;
-
-    @Column(name = "flight_number") 
     private String flightNumber;
-
-    @Column(name = "departure_airport") 
     private String departureAirport;
-
-    @Column(name = "arrival_airport") 
     private String arrivalAirport;
-
-    @Column(name = "departure_date_time") 
     private LocalDateTime departureDateTime;
-
-    @Column(name = "arrival_date_time") 
     private LocalDateTime arrivalDateTime;
-
-    @Column(name = "status") 
     private String status;
 
-    
-    public Booking() {
+    // Default constructor
+    public BookingDTO() {
     }
 
-    
-    public Booking(Long userId, String flightNumber, String departureAirport, String arrivalAirport,
-                   LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
-        this.userId = userId;
+    // Parameterized constructor
+    public BookingDTO(Long id, String flightNumber, String departureAirport, String arrivalAirport,
+                      LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
+        this.id = id;
         this.flightNumber = flightNumber;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
@@ -54,21 +28,26 @@ public class Booking {
         this.status = status;
     }
 
-    
+    // Static method to convert Booking to BookingDTO
+    public static BookingDTO fromBooking(Booking booking) {
+        return new BookingDTO(
+                booking.getId(),
+                booking.getFlightNumber(),
+                booking.getDepartureAirport(),
+                booking.getArrivalAirport(),
+                booking.getDepartureDateTime(),
+                booking.getArrivalDateTime(),
+                booking.getStatus()
+        );
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getFlightNumber() {
@@ -117,19 +96,5 @@ public class Booking {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", flightNumber='" + flightNumber + '\'' +
-                ", departureAirport='" + departureAirport + '\'' +
-                ", arrivalAirport='" + arrivalAirport + '\'' +
-                ", departureDateTime=" + departureDateTime +
-                ", arrivalDateTime=" + arrivalDateTime +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

@@ -1,8 +1,11 @@
 package com.cs509team4.AirlineReservation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    Optional<Booking> findByUserIdAndFlightNumber(Long userId, String flightNumber);
+    List<Booking> findByUserId(Long userId);
 }
