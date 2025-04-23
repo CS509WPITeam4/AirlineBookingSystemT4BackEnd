@@ -1,36 +1,60 @@
 package com.cs509team4.AirlineReservation;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "bookings")
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "booking_id") 
     private Long id;
 
+    @Column(name = "user_id") 
     private Long userId;
+
+    @Column(name = "flight_number") 
     private String flightNumber;
-    private String departAirport;
-    private String arriveAirport;
-    private LocalDateTime departDateTime;
-    private LocalDateTime arriveDateTime;
+
+    @Column(name = "departure_airport") 
+    private String departureAirport;
+
+    @Column(name = "arrival_airport") 
+    private String arrivalAirport;
+
+    @Column(name = "departure_date_time") 
+    private LocalDateTime departureDateTime;
+
+    @Column(name = "arrival_date_time") 
+    private LocalDateTime arrivalDateTime;
+
+    @Column(name = "status") 
     private String status;
 
-    public Booking() {}
+    
+    public Booking() {
+    }
 
-    public Booking(Long userId, String flightNumber, String departAirport, String arriveAirport,
-                   LocalDateTime departDateTime, LocalDateTime arriveDateTime, String status) {
+    
+    public Booking(Long userId, String flightNumber, String departureAirport, String arrivalAirport,
+                   LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
         this.userId = userId;
         this.flightNumber = flightNumber;
-        this.departAirport = departAirport;
-        this.arriveAirport = arriveAirport;
-        this.departDateTime = departDateTime;
-        this.arriveDateTime = arriveDateTime;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.departureDateTime = departureDateTime;
+        this.arrivalDateTime = arrivalDateTime;
         this.status = status;
     }
 
-    // Getters and setters
+    
     public Long getId() {
         return id;
     }
@@ -55,36 +79,36 @@ public class Booking {
         this.flightNumber = flightNumber;
     }
 
-    public String getDepartAirport() {
-        return departAirport;
+    public String getDepartureAirport() {
+        return departureAirport;
     }
 
-    public void setDepartAirport(String departAirport) {
-        this.departAirport = departAirport;
+    public void setDepartureAirport(String departureAirport) {
+        this.departureAirport = departureAirport;
     }
 
-    public String getArriveAirport() {
-        return arriveAirport;
+    public String getArrivalAirport() {
+        return arrivalAirport;
     }
 
-    public void setArriveAirport(String arriveAirport) {
-        this.arriveAirport = arriveAirport;
+    public void setArrivalAirport(String arrivalAirport) {
+        this.arrivalAirport = arrivalAirport;
     }
 
-    public LocalDateTime getDepartDateTime() {
-        return departDateTime;
+    public LocalDateTime getDepartureDateTime() {
+        return departureDateTime;
     }
 
-    public void setDepartDateTime(LocalDateTime departDateTime) {
-        this.departDateTime = departDateTime;
+    public void setDepartureDateTime(LocalDateTime departureDateTime) {
+        this.departureDateTime = departureDateTime;
     }
 
-    public LocalDateTime getArriveDateTime() {
-        return arriveDateTime;
+    public LocalDateTime getArrivalDateTime() {
+        return arrivalDateTime;
     }
 
-    public void setArriveDateTime(LocalDateTime arriveDateTime) {
-        this.arriveDateTime = arriveDateTime;
+    public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
+        this.arrivalDateTime = arrivalDateTime;
     }
 
     public String getStatus() {
@@ -93,5 +117,19 @@ public class Booking {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", flightNumber='" + flightNumber + '\'' +
+                ", departureAirport='" + departureAirport + '\'' +
+                ", arrivalAirport='" + arrivalAirport + '\'' +
+                ", departureDateTime=" + departureDateTime +
+                ", arrivalDateTime=" + arrivalDateTime +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
