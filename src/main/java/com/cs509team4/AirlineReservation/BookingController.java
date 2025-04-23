@@ -13,12 +13,32 @@ import java.util.List;
 @RequestMapping("/api/bookings")
 public class BookingController {
 
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    @PostMapping
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
+        Optional<? extends Flight> flight = flightRepository.findByFlightNumberAndDepartDateTime(
+                booking.getFlightNumber(), booking.getDepartDateTime());
+
+//        Optional<? extends Flight> southwestFlight = southwestRepository.findByFlightNumberAndDepartDateTime(
+//                booking.getFlightNumber(), booking.getDepartDateTime());
+
+        if (flight.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight not found");
+        }
+
     private final BookingService bookingService;
 
     @Autowired
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<BookingDTO>> getUserBookings(@PathVariable Long userId) {
