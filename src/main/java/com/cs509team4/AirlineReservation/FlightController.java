@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +24,23 @@ public class FlightController {
     public ResponseEntity<List<FlightCardDTO>> searchFlights(
             @RequestParam(required = false) String departAirport,
             @RequestParam(required = false) String arriveAirport,
-            @RequestParam(required = false) java.time.LocalDateTime departDateTime) {
+            @RequestParam(required = false) String departureDate,
+            @RequestParam(required = false) String maxLayover) {
 
         if (departAirport == null || arriveAirport == null) {
             return ResponseEntity.badRequest().build();
         }
+
+        LocalDate departDate = null;
+        if (departureDate != null) {
+            departDate = LocalDate.parse(departureDate);
+        }
+
+        int maxLayoverInt = 300;
+        if (maxLayover != null) {
+            maxLayoverInt = Integer.parseInt(maxLayover);
+        }
+
 
         List<FlightCardDTO> results = new ArrayList<>();
         int numResults = 0;
@@ -35,7 +48,12 @@ public class FlightController {
         int MAX_RESULTS = 24;
 
         // Direct flights first
-        List<Flight> directFlights = flightRepository.search(departAirport, arriveAirport);
+        List<Flight> directFlights;
+        if(departDate == null) {
+            directFlights = flightRepository.search(departAirport, arriveAirport);
+        } else {
+            directFlights = flightRepository.searchWithDate(departAirport, arriveAirport, departDate);
+        }
         for (Flight f : directFlights) {
             if (numResults >= MAX_RESULTS) { break; }
             List<Flight> list = new ArrayList<>();
@@ -44,9 +62,14 @@ public class FlightController {
             numResults++;
         }
 
-        // Layovers - search sequentially starting with 1, then 2, etc until MAX_RESULTS is reached or layovers hits 10
-        while(numResults <= MAX_RESULTS && numLayovers < 10) {
-            List<Object[]> layoverFlightsList = flightRepository.searchWithLayovers(departAirport, arriveAirport, numLayovers, MAX_RESULTS - numResults);
+        // Layovers - search sequentially starting with 1, then 2, etc until MAX_RESULTS is reached or layovers hits 5
+        while(numResults <= MAX_RESULTS && numLayovers < 5) {
+            List<Object[]> layoverFlightsList;
+            if(departDate == null) {
+                layoverFlightsList = flightRepository.searchWithLayovers(departAirport, arriveAirport, numLayovers, MAX_RESULTS - numResults, null, maxLayoverInt);
+            } else {
+                layoverFlightsList = flightRepository.searchWithLayovers(departAirport, arriveAirport, numLayovers, MAX_RESULTS - numResults, departDate, maxLayoverInt);
+            }
             for (Object[] row : layoverFlightsList) {
                 if (numResults >= 100) break;
 
