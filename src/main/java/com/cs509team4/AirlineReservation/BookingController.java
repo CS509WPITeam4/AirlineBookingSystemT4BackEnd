@@ -1,13 +1,12 @@
 package com.cs509team4.AirlineReservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -23,7 +22,7 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
         Optional<? extends Flight> flight = flightRepository.findByFlightNumberAndDepartDateTime(
-                booking.getFlightNumber(), booking.getDepartDateTime());
+                booking.getFlightNumber(), booking.getDepartureDateTime());
 
 //        Optional<? extends Flight> southwestFlight = southwestRepository.findByFlightNumberAndDepartDateTime(
 //                booking.getFlightNumber(), booking.getDepartDateTime());
@@ -31,6 +30,8 @@ public class BookingController {
         if (flight.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight not found");
         }
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookingRepository.save(booking));
+    }
 
     private final BookingService bookingService;
 
