@@ -1,6 +1,5 @@
 package com.cs509team4.AirlineReservation;
 
-import jakarta.persistence.Table;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
