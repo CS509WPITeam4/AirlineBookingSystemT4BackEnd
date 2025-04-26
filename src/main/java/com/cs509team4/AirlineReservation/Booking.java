@@ -14,28 +14,28 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id") // Using booking_id as the primary key column name
+    @Column(name = "booking_id")
     private Long id;
 
-    @Column(name = "user_id") // Explicitly map userId to user_id column
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "flight_number") // Map flightNumber to flight_number column
+    @Column(name = "flight_number")
     private String flightNumber;
 
-    @Column(name = "departure_airport") // Map departureAirport to departure_airport column
+    @Column(name = "departure_airport")
     private String departureAirport;
 
-    @Column(name = "arrival_airport") // Map arrivalAirport to arrival_airport column
+    @Column(name = "arrival_airport")
     private String arrivalAirport;
 
-    @Column(name = "departure_date_time") // Map departureDateTime to departure_date_time column
+    @Column(name = "departure_date_time")
     private LocalDateTime departureDateTime;
 
-    @Column(name = "arrival_date_time") // Map arrivalDateTime to arrival_date_time column
+    @Column(name = "arrival_date_time")
     private LocalDateTime arrivalDateTime;
 
-    @Column(name = "status") // Map status to status column
+    @Column(name = "status") 
     private String status;
 
     // Default constructor

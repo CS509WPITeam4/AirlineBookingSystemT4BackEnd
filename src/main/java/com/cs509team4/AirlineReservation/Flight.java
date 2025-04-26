@@ -2,10 +2,9 @@ package com.cs509team4.AirlineReservation;
 
 import jakarta.persistence.*;
 
-// Flight class with flight information
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Flight {
+public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_seq")
     @SequenceGenerator(name = "flight_seq", sequenceName = "flight_sequence", allocationSize = 1)

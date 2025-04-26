@@ -28,4 +28,14 @@ public class BookingService {
                 .map(BookingDTO::fromBooking)
                 .orElse(null);
     }
+
+    public BookingDTO createBooking(BookingDTO bookingDTO) {
+        if (bookingRepository.existsByUserIdAndFlightNumber(
+                bookingDTO.getUserId(), bookingDTO.getFlightNumber())) {
+            throw new DuplicateBookingException("Duplicate booking");
+        }
+        Booking booking = bookingDTO.toBooking();
+        Booking savedBooking = bookingRepository.save(booking);
+        return BookingDTO.fromBooking(savedBooking);
+    }
 }

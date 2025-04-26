@@ -1,11 +1,9 @@
 package com.cs509team4.AirlineReservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,18 +19,26 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<BookingDTO>> getUserBookings(@PathVariable Long userId) {
+    public ResponseEntity<List<BookingDTO>> getBookingsByUserId(@PathVariable Long userId) {
         List<BookingDTO> bookings = bookingService.getUserBookings(userId);
         return ResponseEntity.ok(bookings);
     }
-
-    @GetMapping("/{bookingId}")
-    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long bookingId) {
-        BookingDTO booking = bookingService.getBookingById(bookingId);
-        if (booking != null) {
-            return ResponseEntity.ok(booking);
-        } else {
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long id) {
+        BookingDTO dto = bookingService.getBookingById(id);
+        if (dto == null) {
             return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping
+    public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO dto) {
+        try {
+            BookingDTO created = bookingService.createBooking(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        } catch (DuplicateBookingException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 }

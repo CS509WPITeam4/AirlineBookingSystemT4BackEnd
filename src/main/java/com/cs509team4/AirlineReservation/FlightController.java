@@ -16,10 +16,10 @@ import java.util.Optional;
 public class FlightController {
 
     @Autowired
-    private DeltaRepository deltaRepository;
+    public DeltaRepository deltaRepository;
 
     @Autowired
-    private SouthwestRepository southwestRepository;
+    public SouthwestRepository southwestRepository;
 
     // Search for flights based on departure and arrival locations
     @GetMapping("/search")
@@ -35,7 +35,6 @@ public class FlightController {
         List<Flight> deltaFlights = deltaRepository.search(departAirport, arriveAirport);
         List<Flight> southwestFlights = southwestRepository.search(departAirport, arriveAirport);
 
-        // Combine the two lists into one
         List<Flight> allFlights = new ArrayList<>();
         allFlights.addAll(deltaFlights);
         allFlights.addAll(southwestFlights);
@@ -64,4 +63,16 @@ public class FlightController {
 
         return ResponseEntity.ok(flight);
     }
+    @GetMapping
+    public ResponseEntity<List<Flight>> getAllFlights() {
+        List<Flight> deltaFlights = deltaRepository.findAll();
+        List<Flight> southwestFlights = southwestRepository.findAll();
+
+        List<Flight> allFlights = new ArrayList<>();
+        allFlights.addAll(deltaFlights);
+        allFlights.addAll(southwestFlights);
+
+        return ResponseEntity.ok(allFlights);
+    }
+
 }

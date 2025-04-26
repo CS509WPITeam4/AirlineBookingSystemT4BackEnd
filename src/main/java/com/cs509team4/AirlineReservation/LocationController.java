@@ -30,4 +30,8 @@ public class LocationController {
 
         return ResponseEntity.ok(locations);
     }
+
+    public ResponseEntity<List<Location>> getLocations(String NYC, Pageable unpaged) {
+        return ResponseEntity.ok(locationService.getLocations(NYC, unpaged));
+    }
 }
