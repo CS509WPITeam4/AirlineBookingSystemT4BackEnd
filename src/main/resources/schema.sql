@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS `southwests`;
 DROP TABLE IF EXISTS `deltas`;
@@ -18,6 +19,7 @@ CREATE TABLE IF NOT EXISTS locations (
     city_name VARCHAR(100) NOT NULL,
     country VARCHAR(100) NOT NULL,
     airport_name VARCHAR(200) NOT NULL,
+    timezone VARCHAR(100) NOT NULL COMMENT 'IANA timezone format, e.g., America/New_York',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -30,6 +32,19 @@ CREATE TABLE IF NOT EXISTS reservations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    flight_number VARCHAR(50) NOT NULL,
+    depart_airport VARCHAR(255) NOT NULL,
+    arrive_airport VARCHAR(255) NOT NULL,
+    depart_datetime DATETIME NOT NULL,
+    arrive_datetime DATETIME NOT NULL,
+    status VARCHAR(50) DEFAULT 'Confirmed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
 
 CREATE TABLE `deltas` (
                           `Id` int NOT NULL AUTO_INCREMENT,
@@ -51,3 +66,14 @@ CREATE TABLE `southwests` (
                               PRIMARY KEY (`Id`)
 );
 
+CREATE OR REPLACE VIEW flights AS
+SELECT * FROM deltas
+UNION ALL
+SELECT
+CONVERT(Id + 20000, SIGNED) AS Id,
+DepartDateTime,
+ArriveDateTime,
+DepartAirport,
+ArriveAirport,
+FlightNumber
+FROM southwests;
