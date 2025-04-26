@@ -1,9 +1,15 @@
 package com.cs509team4.AirlineReservation;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Immutable;
 
 @Entity
+
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
+@Immutable  // Optional but recommended for views (from Hibernate)
+@Table(name = "flights")
+
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_seq")

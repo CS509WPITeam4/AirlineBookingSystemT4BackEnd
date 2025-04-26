@@ -14,6 +14,7 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "booking_id")
     private Long id;
 
@@ -33,16 +34,37 @@ public class Booking {
     private LocalDateTime departureDateTime;
 
     @Column(name = "arrival_date_time")
+
+    @Column(name = "booking_id") 
+    private Long id;
+
+    @Column(name = "user_id") 
+    private Long userId;
+
+    @Column(name = "flight_number") 
+    private String flightNumber;
+
+    @Column(name = "departure_airport") 
+    private String departureAirport;
+
+    @Column(name = "arrival_airport") 
+    private String arrivalAirport;
+
+    @Column(name = "departure_date_time") 
+    private LocalDateTime departureDateTime;
+
+    @Column(name = "arrival_date_time") 
+
     private LocalDateTime arrivalDateTime;
 
     @Column(name = "status") 
     private String status;
 
-    // Default constructor
+    
     public Booking() {
     }
 
-    // Parameterized constructor
+    
     public Booking(Long userId, String flightNumber, String departureAirport, String arrivalAirport,
                    LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
         this.userId = userId;
@@ -54,7 +76,7 @@ public class Booking {
         this.status = status;
     }
 
-    // Getters and Setters
+    
     public Long getId() {
         return id;
     }
