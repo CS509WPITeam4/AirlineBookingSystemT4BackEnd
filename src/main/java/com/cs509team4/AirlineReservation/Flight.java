@@ -1,13 +1,11 @@
 package com.cs509team4.AirlineReservation;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Immutable;
 
 // Flight class with flight information
 @Entity
-@Immutable  // Optional but recommended for views (from Hibernate)
-@Table(name = "flights")
-public class Flight {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_seq")
     @SequenceGenerator(name = "flight_seq", sequenceName = "flight_sequence", allocationSize = 1)

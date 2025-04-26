@@ -14,35 +14,35 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id") 
+    @Column(name = "booking_id") // Using booking_id as the primary key column name
     private Long id;
 
-    @Column(name = "user_id") 
+    @Column(name = "user_id") // Explicitly map userId to user_id column
     private Long userId;
 
-    @Column(name = "flight_number") 
+    @Column(name = "flight_number") // Map flightNumber to flight_number column
     private String flightNumber;
 
-    @Column(name = "departure_airport") 
+    @Column(name = "departure_airport") // Map departureAirport to departure_airport column
     private String departureAirport;
 
-    @Column(name = "arrival_airport") 
+    @Column(name = "arrival_airport") // Map arrivalAirport to arrival_airport column
     private String arrivalAirport;
 
-    @Column(name = "departure_date_time") 
+    @Column(name = "departure_date_time") // Map departureDateTime to departure_date_time column
     private LocalDateTime departureDateTime;
 
-    @Column(name = "arrival_date_time") 
+    @Column(name = "arrival_date_time") // Map arrivalDateTime to arrival_date_time column
     private LocalDateTime arrivalDateTime;
 
-    @Column(name = "status") 
+    @Column(name = "status") // Map status to status column
     private String status;
 
-    
+    // Default constructor
     public Booking() {
     }
 
-    
+    // Parameterized constructor
     public Booking(Long userId, String flightNumber, String departureAirport, String arrivalAirport,
                    LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
         this.userId = userId;
@@ -54,7 +54,7 @@ public class Booking {
         this.status = status;
     }
 
-    
+    // Getters and Setters
     public Long getId() {
         return id;
     }

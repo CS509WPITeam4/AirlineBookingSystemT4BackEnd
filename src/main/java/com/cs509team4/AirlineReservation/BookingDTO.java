@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class BookingDTO {
 
     private Long id;
+    private Long userId;
     private String flightNumber;
     private String departureAirport;
     private String arrivalAirport;
@@ -12,14 +13,13 @@ public class BookingDTO {
     private LocalDateTime arrivalDateTime;
     private String status;
 
-    // Default constructor
-    public BookingDTO() {
-    }
+    public BookingDTO() {}
 
-    // Parameterized constructor
-    public BookingDTO(Long id, String flightNumber, String departureAirport, String arrivalAirport,
-                      LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
+    public BookingDTO(Long id, Long userId, String flightNumber, String departureAirport,
+                      String arrivalAirport, LocalDateTime departureDateTime,
+                      LocalDateTime arrivalDateTime, String status) {
         this.id = id;
+        this.userId = userId;
         this.flightNumber = flightNumber;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
@@ -28,10 +28,10 @@ public class BookingDTO {
         this.status = status;
     }
 
-    // Static method to convert Booking to BookingDTO
     public static BookingDTO fromBooking(Booking booking) {
         return new BookingDTO(
                 booking.getId(),
+                booking.getUserId(),
                 booking.getFlightNumber(),
                 booking.getDepartureAirport(),
                 booking.getArrivalAirport(),
@@ -41,13 +41,33 @@ public class BookingDTO {
         );
     }
 
-    // Getters and Setters
+    public Booking toBooking() {
+        Booking booking = new Booking();
+        booking.setId(this.id);
+        booking.setUserId(this.userId);
+        booking.setFlightNumber(this.flightNumber);
+        booking.setDepartureAirport(this.departureAirport);
+        booking.setArrivalAirport(this.arrivalAirport);
+        booking.setDepartureDateTime(this.departureDateTime);
+        booking.setArrivalDateTime(this.arrivalDateTime);
+        booking.setStatus(this.status);
+        return booking;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFlightNumber() {
