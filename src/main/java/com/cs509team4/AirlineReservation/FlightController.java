@@ -16,10 +16,10 @@ import java.util.Optional;
 public class FlightController {
 
     @Autowired
-    private DeltaRepository deltaRepository;
+    public DeltaRepository deltaRepository;
 
     @Autowired
-    private SouthwestRepository southwestRepository;
+    public SouthwestRepository southwestRepository;
 
     // Search for flights based on departure and arrival locations
     @GetMapping("/search")

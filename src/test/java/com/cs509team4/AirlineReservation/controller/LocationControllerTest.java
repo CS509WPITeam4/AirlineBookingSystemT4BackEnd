@@ -5,64 +5,42 @@ import com.cs509team4.AirlineReservation.LocationController;
 import com.cs509team4.AirlineReservation.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LocationControllerTest {
 
-    @Mock
-    private LocationService locationService;
+    @Mock private LocationService locationService;
+    @InjectMocks private LocationController locationController;
 
-    @InjectMocks
-    private LocationController locationController;
+    @BeforeEach void init() { MockitoAnnotations.openMocks(this); }
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @Test
+    void emptyReturnsNoContent() {
+        when(locationService.getLocations(any(), any(Pageable.class)))
+                .thenReturn(Collections.emptyList());
+
+        ResponseEntity<List<Location>> resp = locationController.getLocations(null, 0, 10);
+        assertEquals(204, resp.getStatusCodeValue());
     }
 
     @Test
-    void testGetLocationsWithNoQuery() {
-        Location loc = new Location();
-        loc.setCityName("Boston");
-
-        // Mock service with no query and unpaged
-        when(locationService.getLocations(null, Pageable.unpaged()))
-                .thenReturn(List.of(loc));
-
-        // Call controller
-        ResponseEntity<List<Location>> response =
-                locationController.getLocations(null, Pageable.unpaged());
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, response.getBody().size());
-        assertEquals("Boston", response.getBody().get(0).getCityName());
-    }
-
-    @Test
-    void testGetLocationsWithQuery() {
+    void nonEmptyReturnsOk() {
         Location loc = new Location();
         loc.setCityName("NYC");
-
-        when(locationService.getLocations("NYC", Pageable.unpaged()))
+        when(locationService.getLocations("NYC", PageRequest.of(0,10)))
                 .thenReturn(List.of(loc));
 
-        ResponseEntity<List<Location>> response =
-                locationController.getLocations("NYC", Pageable.unpaged());
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, response.getBody().size());
-        assertEquals("NYC", response.getBody().get(0).getCityName());
+        ResponseEntity<List<Location>> resp = locationController.getLocations("NYC", 0, 10);
+        assertEquals(200, resp.getStatusCodeValue());
+        assertEquals("NYC", resp.getBody().get(0).getCityName());
     }
 }

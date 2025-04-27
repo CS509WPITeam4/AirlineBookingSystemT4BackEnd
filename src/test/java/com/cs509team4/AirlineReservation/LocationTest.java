@@ -6,17 +6,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LocationTest {
 
     @Test
-    void testLocationGettersSetters() {
-        Location location = new Location();
+    void testGettersSetters() {
+        Location loc = new Location();
+        loc.setId(42L);
+        loc.setCityName("Boston");
+        loc.setCityName("Boston, MA");
 
-        // Only test simple fields, avoid database behavior
-        location.setCityName("New York");
-        location.setCountry("USA");
-        location.setAirportName("JFK Airport");
-
-        // Don't touch id if it's auto-generated
-        assertEquals("New York", location.getCityName());
-        assertEquals("USA", location.getCountry());
-        assertEquals("JFK Airport", location.getAirportName());
+        assertEquals(42, loc.getId());
+        assertEquals("Boston", loc.getCityName());
+        assertEquals("Boston, MA", loc.getCityName());
     }
 }

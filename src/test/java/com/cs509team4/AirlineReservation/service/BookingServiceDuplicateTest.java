@@ -1,12 +1,19 @@
 package com.cs509team4.AirlineReservation.service;
 
-import com.cs509team4.AirlineReservation.*;
+import com.cs509team4.AirlineReservation.Booking;
+import com.cs509team4.AirlineReservation.BookingDTO;
+import com.cs509team4.AirlineReservation.BookingRepository;
+import com.cs509team4.AirlineReservation.BookingService;
+import com.cs509team4.AirlineReservation.DuplicateBookingException;
 import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BookingServiceDuplicateTest {
+class BookingServiceDuplicateTest {
 
     @Mock
     private BookingRepository bookingRepository;

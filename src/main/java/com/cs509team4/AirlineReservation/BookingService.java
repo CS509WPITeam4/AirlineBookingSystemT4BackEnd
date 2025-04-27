@@ -29,13 +29,12 @@ public class BookingService {
                 .orElse(null);
     }
 
-    public BookingDTO createBooking(BookingDTO bookingDTO) {
+    public BookingDTO createBooking(BookingDTO dto) {
         if (bookingRepository.existsByUserIdAndFlightNumber(
-                bookingDTO.getUserId(), bookingDTO.getFlightNumber())) {
+                dto.getUserId(), dto.getFlightNumber())) {
             throw new DuplicateBookingException("Duplicate booking");
         }
-        Booking booking = bookingDTO.toBooking();
-        Booking savedBooking = bookingRepository.save(booking);
-        return BookingDTO.fromBooking(savedBooking);
+        Booking saved = bookingRepository.save(dto.toBooking());
+        return BookingDTO.fromBooking(saved);
     }
 }

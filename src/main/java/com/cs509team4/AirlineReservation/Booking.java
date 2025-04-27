@@ -1,6 +1,5 @@
 package com.cs509team4.AirlineReservation;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,29 +13,15 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id") // Using booking_id as the primary key column name
     private Long id;
 
-    @Column(name = "user_id") // Explicitly map userId to user_id column
     private Long userId;
-
-    @Column(name = "flight_number") // Map flightNumber to flight_number column
     private String flightNumber;
-
-    @Column(name = "departure_airport") // Map departureAirport to departure_airport column
     private String departureAirport;
-
-    @Column(name = "arrival_airport") // Map arrivalAirport to arrival_airport column
     private String arrivalAirport;
-
-    @Column(name = "departure_date_time") // Map departureDateTime to departure_date_time column
     private LocalDateTime departureDateTime;
-
-    @Column(name = "arrival_date_time") // Map arrivalDateTime to arrival_date_time column
     private LocalDateTime arrivalDateTime;
-
-    @Column(name = "status") // Map status to status column
-    private String status;
+    private String status; // Confirmed, Canceled
 
     // Default constructor
     public Booking() {
