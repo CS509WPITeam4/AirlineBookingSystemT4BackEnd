@@ -44,11 +44,11 @@ public class FlightControllerDetailsTest {
 
     @Test
     void testGetFlightDetails_BadRequest() {
-        // missing flightNum
+
         ResponseEntity<Flight> resp1 = flightController.getFlight(0, null);
         assertEquals(400, resp1.getStatusCodeValue());
 
-        // invalid airline prefix
+
         ResponseEntity<Flight> resp2 = flightController.getFlight(0, "XX000");
         assertEquals(400, resp2.getStatusCodeValue());
     }
