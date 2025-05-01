@@ -1,22 +1,26 @@
 package com.cs509team4.AirlineReservation;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LocationTest {
 
     @Test
-    void testLocationGettersSetters() {
-        Location location = new Location();
+    void testGettersSetters() {
 
-        // Only test simple fields, avoid database behavior
-        location.setCityName("New York");
-        location.setCountry("USA");
-        location.setAirportName("JFK Airport");
+        Location loc = new Location(
+                "JFK",
+                "New York",
+                "USA",
+                "John F Kennedy International"
+        );
+        loc.setId(1L);
 
-        // Don't touch id if it's auto-generated
-        assertEquals("New York", location.getCityName());
-        assertEquals("USA", location.getCountry());
-        assertEquals("JFK Airport", location.getAirportName());
+        assertEquals(1L, loc.getId());
+        assertEquals("JFK", loc.getIataCode());
+        assertEquals("New York", loc.getCityName());
+        assertEquals("USA", loc.getCountry());
+        assertEquals("John F Kennedy International", loc.getAirportName());
     }
 }

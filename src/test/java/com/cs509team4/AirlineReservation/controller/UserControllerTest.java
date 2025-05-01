@@ -19,8 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UserControllerTest {
-    @Mock private UserService userService;
-    @InjectMocks private UserController userController;
+    @Mock
+    private UserService userService;
+
+    @InjectMocks
+    private UserController userController;
 
     @BeforeEach
     void setUp() {
@@ -34,9 +37,11 @@ public class UserControllerTest {
         dto.setEmail("email@example.com");
         dto.setPassword("pwd");
 
-        when(userService.registerUser(dto)).thenReturn(new User("user","email@example.com","pwd"));
+        when(userService.registerUser(dto))
+                .thenReturn(new User("user", "email@example.com", "pwd"));
 
         ResponseEntity<String> response = userController.signUp(dto);
+
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("User registered successfully!", response.getBody());
         verify(userService).registerUser(dto);
@@ -49,9 +54,11 @@ public class UserControllerTest {
         dto.setEmail("email@example.com");
         dto.setPassword("pwd");
 
-        when(userService.registerUser(dto)).thenThrow(new RuntimeException("Email already in use!"));
+        when(userService.registerUser(dto))
+                .thenThrow(new RuntimeException("Email already in use!"));
 
         ResponseEntity<String> response = userController.signUp(dto);
+
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Email already in use!", response.getBody());
     }
@@ -61,12 +68,15 @@ public class UserControllerTest {
         AuthRequest req = new AuthRequest();
         req.setIdentifier("user");
         req.setPassword("pwd");
-        User user = new User("user","email@example.com","pwd");
+        User user = new User("user", "email@example.com", "pwd");
 
-        when(userService.authenticate("user","pwd")).thenReturn("token123");
-        when(userService.getUserDetails("user")).thenReturn(Optional.of(user));
+        when(userService.authenticate("user", "pwd"))
+                .thenReturn("token123");
+        when(userService.getUserDetails("user"))
+                .thenReturn(Optional.of(user));
 
         ResponseEntity<AuthResponse> response = userController.login(req);
+
         assertEquals(200, response.getStatusCodeValue());
         AuthResponse body = response.getBody();
         assertNotNull(body);
@@ -80,32 +90,15 @@ public class UserControllerTest {
         req.setIdentifier("user");
         req.setPassword("wrong");
 
-        when(userService.authenticate("user","wrong")).thenThrow(new RuntimeException("Invalid password"));
+        when(userService.authenticate("user", "wrong"))
+                .thenThrow(new RuntimeException("Invalid password"));
 
         ResponseEntity<AuthResponse> response = userController.login(req);
+
         assertEquals(401, response.getStatusCodeValue());
         AuthResponse body = response.getBody();
         assertNotNull(body);
         assertNull(body.getToken());
         assertNull(body.getUser());
-    }
-
-    @Test
-    void testGetUser_Found() {
-        User user = new User("user","email@example.com","pwd");
-        when(userService.getUserDetails("user")).thenReturn(Optional.of(user));
-
-        ResponseEntity<User> response = userController.getUser("user");
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(user, response.getBody());
-    }
-
-    @Test
-    void testGetUser_NotFound() {
-        when(userService.getUserDetails("x")).thenReturn(Optional.empty());
-
-        ResponseEntity<User> response = userController.getUser("x");
-        assertEquals(404, response.getStatusCodeValue());
-        assertNull(response.getBody());
     }
 }

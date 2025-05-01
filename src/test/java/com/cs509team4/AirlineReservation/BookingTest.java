@@ -23,8 +23,6 @@ public class BookingTest {
         assertEquals(7L, b.getId());
         assertEquals("WN200", b.getFlightNumber());
         assertEquals("PENDING", b.getStatus());
-
-        // toString covers string representation
         assertTrue(b.toString().contains("WN200"));
     }
 }

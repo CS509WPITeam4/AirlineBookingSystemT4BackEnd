@@ -1,55 +1,92 @@
 package com.cs509team4.AirlineReservation.controller;
 
-import com.cs509team4.AirlineReservation.BookingController;
-import com.cs509team4.AirlineReservation.BookingDTO;
-import com.cs509team4.AirlineReservation.BookingService;
-import com.cs509team4.AirlineReservation.DuplicateBookingException;
+import com.cs509team4.AirlineReservation.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-public class BookingControllerCreateTest {
+@SpringBootTest(
+        classes = {
+                BookingController.class,
+                BookingControllerCreateTest.TestConfig.class
+        }
+)
+class BookingControllerCreateTest {
 
-    @Mock private BookingService bookingService;
-    @InjectMocks private BookingController bookingController;
+    @Autowired
+    private BookingController bookingController;
 
-    @BeforeEach void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.reset(bookingRepository, flightRepository);
     }
 
     @Test
-    void testCreateBookingSuccess() {
-        BookingDTO dto = new BookingDTO();
-        dto.setUserId(1L);
-        dto.setFlightNumber("DL300");
-        BookingDTO saved = new BookingDTO();
-        saved.setUserId(1L);
-        saved.setFlightNumber("DL300");
+    void createBooking_whenFlightExists_savesAndReturns201() {
+        Booking booking = new Booking();
+        booking.setFlightNumber("DL300");
+        booking.setDepartureDateTime(LocalDateTime.of(2025, 1, 1, 10, 0));
 
-        when(bookingService.createBooking(dto)).thenReturn(saved);
+        // stub the flight‐lookup
+        when(flightRepository.findByFlightNumberAndDepartDateTime(
+                booking.getFlightNumber(),
+                booking.getDepartureDateTime()))
+                .thenReturn(Optional.of(new Flight())); // dummy Flight
 
-        ResponseEntity<BookingDTO> resp = bookingController.createBooking(dto);
+        // stub the save
+        when(bookingRepository.save(booking)).thenReturn(booking);
+
+        ResponseEntity<?> resp = bookingController.createBooking(booking);
         assertEquals(201, resp.getStatusCodeValue());
-        assertEquals("DL300", resp.getBody().getFlightNumber());
+        assertSame(booking, resp.getBody());
     }
 
     @Test
-    void testCreateBookingDuplicateReturns409() {
-        BookingDTO dto = new BookingDTO();
-        dto.setUserId(1L);
-        dto.setFlightNumber("DL300");
+    void createBooking_whenFlightMissing_returns404() {
+        Booking booking = new Booking();
+        booking.setFlightNumber("DL300");
+        booking.setDepartureDateTime(LocalDateTime.of(2025, 1, 1, 10, 0));
 
-        when(bookingService.createBooking(dto))
-                .thenThrow(new DuplicateBookingException("Duplicate"));
+        // no flight found
+        when(flightRepository.findByFlightNumberAndDepartDateTime(
+                booking.getFlightNumber(),
+                booking.getDepartureDateTime()))
+                .thenReturn(Optional.empty());
 
-        ResponseEntity<BookingDTO> resp = bookingController.createBooking(dto);
-        assertEquals(409, resp.getStatusCodeValue());
-        assertNull(resp.getBody());
+        ResponseEntity<?> resp = bookingController.createBooking(booking);
+        assertEquals(404, resp.getStatusCodeValue());
+        assertEquals("Flight not found", resp.getBody());
+    }
+
+    /**
+     * Test configuration that supplies mocks for every dependency
+     * of BookingController (including the unused BookingService).
+     */
+    static class TestConfig {
+        @Bean BookingRepository bookingRepository() {
+            return Mockito.mock(BookingRepository.class);
+        }
+        @Bean FlightRepository flightRepository() {
+            return Mockito.mock(FlightRepository.class);
+        }
+        @Bean BookingService bookingService() {
+            return Mockito.mock(BookingService.class);
+        }
     }
 }

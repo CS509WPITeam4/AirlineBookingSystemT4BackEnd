@@ -36,7 +36,7 @@ public class BookingControllerTest {
 
         when(bookingService.getUserBookings(1L)).thenReturn(List.of(bookingDTO));
 
-        ResponseEntity<List<BookingDTO>> response = bookingController.getBookingsByUserId(1L);
+        ResponseEntity<List<BookingDTO>> response = bookingController.getUserBookings(1L);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("DL101", response.getBody().get(0).getFlightNumber());

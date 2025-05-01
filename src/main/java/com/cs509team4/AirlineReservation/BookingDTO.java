@@ -15,9 +15,14 @@ public class BookingDTO {
 
     public BookingDTO() {}
 
-    public BookingDTO(Long id, Long userId, String flightNumber, String departureAirport,
-                      String arrivalAirport, LocalDateTime departureDateTime,
-                      LocalDateTime arrivalDateTime, String status) {
+    public BookingDTO(Long id,
+                      Long userId,
+                      String flightNumber,
+                      String departureAirport,
+                      String arrivalAirport,
+                      LocalDateTime departureDateTime,
+                      LocalDateTime arrivalDateTime,
+                      String status) {
         this.id = id;
         this.userId = userId;
         this.flightNumber = flightNumber;
@@ -28,36 +33,37 @@ public class BookingDTO {
         this.status = status;
     }
 
-    public static BookingDTO fromBooking(Booking booking) {
+    public static BookingDTO fromBooking(Booking b) {
         return new BookingDTO(
-                booking.getId(),
-                booking.getUserId(),
-                booking.getFlightNumber(),
-                booking.getDepartureAirport(),
-                booking.getArrivalAirport(),
-                booking.getDepartureDateTime(),
-                booking.getArrivalDateTime(),
-                booking.getStatus()
+                b.getId(),
+                b.getUserId(),
+                b.getFlightNumber(),
+                b.getDepartureAirport(),
+                b.getArrivalAirport(),
+                b.getDepartureDateTime(),
+                b.getArrivalDateTime(),
+                b.getStatus()
         );
     }
 
+    /** Converts this DTO back into an entity for saving. */
     public Booking toBooking() {
-        Booking booking = new Booking();
-        booking.setId(this.id);
-        booking.setUserId(this.userId);
-        booking.setFlightNumber(this.flightNumber);
-        booking.setDepartureAirport(this.departureAirport);
-        booking.setArrivalAirport(this.arrivalAirport);
-        booking.setDepartureDateTime(this.departureDateTime);
-        booking.setArrivalDateTime(this.arrivalDateTime);
-        booking.setStatus(this.status);
-        return booking;
+        Booking b = new Booking();
+        b.setUserId(this.userId);
+        b.setFlightNumber(this.flightNumber);
+        b.setDepartureAirport(this.departureAirport);
+        b.setArrivalAirport(this.arrivalAirport);
+        b.setDepartureDateTime(this.departureDateTime);
+        b.setArrivalDateTime(this.arrivalDateTime);
+        b.setStatus(this.status);
+        return b;
     }
+
+    // ————————————— Getters & Setters —————————————
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -65,7 +71,6 @@ public class BookingDTO {
     public Long getUserId() {
         return userId;
     }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -73,7 +78,6 @@ public class BookingDTO {
     public String getFlightNumber() {
         return flightNumber;
     }
-
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
     }
@@ -81,7 +85,6 @@ public class BookingDTO {
     public String getDepartureAirport() {
         return departureAirport;
     }
-
     public void setDepartureAirport(String departureAirport) {
         this.departureAirport = departureAirport;
     }
@@ -89,7 +92,6 @@ public class BookingDTO {
     public String getArrivalAirport() {
         return arrivalAirport;
     }
-
     public void setArrivalAirport(String arrivalAirport) {
         this.arrivalAirport = arrivalAirport;
     }
@@ -97,7 +99,6 @@ public class BookingDTO {
     public LocalDateTime getDepartureDateTime() {
         return departureDateTime;
     }
-
     public void setDepartureDateTime(LocalDateTime departureDateTime) {
         this.departureDateTime = departureDateTime;
     }
@@ -105,7 +106,6 @@ public class BookingDTO {
     public LocalDateTime getArrivalDateTime() {
         return arrivalDateTime;
     }
-
     public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
         this.arrivalDateTime = arrivalDateTime;
     }
@@ -113,7 +113,6 @@ public class BookingDTO {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }
