@@ -16,8 +16,4 @@ public class LocationService {
         }
         return locationRepository.findAll(pageable).getContent();
     }
-
-    public Object getLocations() {
-        return locationRepository.findAll();
-    }
 }

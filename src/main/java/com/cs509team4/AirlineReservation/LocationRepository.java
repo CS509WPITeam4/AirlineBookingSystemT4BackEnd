@@ -1,7 +1,6 @@
 package com.cs509team4.AirlineReservation;
 
 import com.cs509team4.AirlineReservation.Location;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +12,5 @@ import java.util.List;
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
     @Query("SELECT l FROM Location l WHERE LOWER(l.cityName) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(l.airportName) LIKE LOWER(CONCAT('%', :query, '%'))")
-    List<Location> searchLocations(String query, Pageable pageable);
-    Page<Location> findAll(Pageable pageable);
-
+    List<Location> searchLocations(@Param("query") String query, Pageable pageable);
 }

@@ -6,10 +6,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookings")
 public class BookingController {
+
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    @PostMapping
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
+        Optional<? extends Flight> flight = flightRepository.findByFlightNumberAndDepartDateTime(
+                booking.getFlightNumber(), booking.getDepartureDateTime());
+
+
+//        Optional<? extends Flight> southwestFlight = southwestRepository.findByFlightNumberAndDepartDateTime(
+//                booking.getFlightNumber(), booking.getDepartDateTime());
+
+        if (flight.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Flight not found");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookingRepository.save(booking));
+    }
 
     private final BookingService bookingService;
 
@@ -17,6 +40,7 @@ public class BookingController {
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
+
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<BookingDTO>> getUserBookings(@PathVariable Long userId) {
@@ -31,17 +55,6 @@ public class BookingController {
             return ResponseEntity.ok(booking);
         } else {
             return ResponseEntity.notFound().build();
-        }
-    }
-
-
-    @PostMapping
-    public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO dto) {
-        try {
-            BookingDTO created = bookingService.createBooking(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        } catch (DuplicateBookingException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 }

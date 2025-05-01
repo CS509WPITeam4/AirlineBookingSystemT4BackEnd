@@ -22,4 +22,3 @@ public interface FlightRepository extends JpaRepository<Flight, Integer>, Flight
     @Query("SELECT f FROM Flight f WHERE f.flightNumber = :flightNumber AND f.departDateTime = :departDateTime")
     Optional<Flight> findByFlightNumberAndDepartDateTime(String flightNumber, java.time.LocalDateTime departDateTime);
 }
-
