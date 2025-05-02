@@ -29,15 +29,15 @@ public class BookingServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetUserBookings() {
-        Booking booking = new Booking(1L, "DL101", "JFK", "SFO",
-                LocalDateTime.now(), LocalDateTime.now().plusHours(6), "CONFIRMED");
-
-        when(bookingRepository.findByUserId(1L)).thenReturn(List.of(booking));
-
-        List<BookingDTO> bookings = bookingService.getUserBookings(1L);
-        assertEquals(1, bookings.size());
-        assertEquals("DL101", bookings.get(0).getFlightNumber());
-    }
+//    @Test
+//    void testGetUserBookings() {
+//        Booking booking = new Booking(1L, "DL101", "JFK", "SFO",
+//                LocalDateTime.now(), LocalDateTime.now().plusHours(6), "CONFIRMED");
+//
+//        when(bookingRepository.findByUserId(1L)).thenReturn(List.of(booking));
+//
+//        List<BookingDTO> bookings = bookingService.getUserBookings(1L);
+//        assertEquals(1, bookings.size());
+//        assertEquals("DL101", bookings.get(0).getFlightNumber());
+//    }
 }

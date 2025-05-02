@@ -30,7 +30,7 @@ public class Flight {
     private String flightNumber;
 
     // Getters and Setters (needed for connecting to database)
-    public int getFlightId() {
+    public int getId() {
         return id;
     }
 
@@ -82,10 +82,10 @@ public class Flight {
 
     public Flight(int id, String flightNumber, String departureAirport, String arrivalAirport, String departureTime, String arrivalTime) {
         this.id = id;
-        this.departDateTime = flightNumber;
-        this.arriveDateTime = departureAirport;
-        this.departAirport = arrivalAirport;
-        this.arriveAirport = departureTime;
-        this.flightNumber = arrivalTime;
+        this.flightNumber = flightNumber;
+        this.departAirport = departureAirport;
+        this.arriveAirport = arrivalAirport;
+        this.departDateTime = departureTime;
+        this.arriveDateTime = arrivalTime;
     }
 }

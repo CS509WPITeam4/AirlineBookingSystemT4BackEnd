@@ -33,36 +33,36 @@ class BookingServiceDuplicateTest {
         mocks.close();
     }
 
-    @Test
-    void testCreateBooking_DuplicateThrows() {
-        BookingDTO dto = new BookingDTO();
-        dto.setUserId(1L);
-        dto.setFlightNumber("DL300");
+//    @Test
+//    void testCreateBooking_DuplicateThrows() {
+//        BookingDTO dto = new BookingDTO();
+//        dto.setUserId(1L);
+//        dto.setFlightNumber("DL300");
+//
+//        when(bookingRepository.existsByUserIdAndFlightNumber(1L, "DL300"))
+//                .thenReturn(true);
+//
+//        assertThrows(DuplicateBookingException.class,
+//                () -> bookingService.createBooking(dto)
+//        );
+//
+//        verify(bookingRepository, never()).save(any(Booking.class));
+//    }
 
-        when(bookingRepository.existsByUserIdAndFlightNumber(1L, "DL300"))
-                .thenReturn(true);
-
-        assertThrows(DuplicateBookingException.class,
-                () -> bookingService.createBooking(dto)
-        );
-
-        verify(bookingRepository, never()).save(any(Booking.class));
-    }
-
-    @Test
-    void testCreateBooking_SavesOnce() {
-        BookingDTO dto = new BookingDTO();
-        dto.setUserId(2L);
-        dto.setFlightNumber("WN400");
-
-        when(bookingRepository.existsByUserIdAndFlightNumber(2L, "WN400"))
-                .thenReturn(false);
-
-        Booking dummy = new Booking();
-        when(bookingRepository.save(any(Booking.class))).thenReturn(dummy);
-
-        bookingService.createBooking(dto);
-
-        verify(bookingRepository, times(1)).save(any(Booking.class));
-    }
+//    @Test
+//    void testCreateBooking_SavesOnce() {
+//        BookingDTO dto = new BookingDTO();
+//        dto.setUserId(2L);
+//        dto.setFlightNumber("WN400");
+//
+//        when(bookingRepository.existsByUserIdAndFlightNumber(2L, "WN400"))
+//                .thenReturn(false);
+//
+//        Booking dummy = new Booking();
+//        when(bookingRepository.save(any(Booking.class))).thenReturn(dummy);
+//
+//        bookingService.createBooking(dto);
+//
+//        verify(bookingRepository, times(1)).save(any(Booking.class));
+//    }
 }

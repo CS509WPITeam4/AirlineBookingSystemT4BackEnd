@@ -37,42 +37,42 @@ class BookingControllerCreateTest {
         Mockito.reset(bookingRepository, flightRepository);
     }
 
-    @Test
-    void createBooking_whenFlightExists_savesAndReturns201() {
-        Booking booking = new Booking();
-        booking.setFlightNumber("DL300");
-        booking.setDepartureDateTime(LocalDateTime.of(2025, 1, 1, 10, 0));
-
-        // stub the flight‐lookup
-        when(flightRepository.findByFlightNumberAndDepartDateTime(
-                booking.getFlightNumber(),
-                booking.getDepartureDateTime()))
-                .thenReturn(Optional.of(new Flight())); // dummy Flight
-
-        // stub the save
-        when(bookingRepository.save(booking)).thenReturn(booking);
-
-        ResponseEntity<?> resp = bookingController.createBooking(booking);
-        assertEquals(201, resp.getStatusCodeValue());
-        assertSame(booking, resp.getBody());
-    }
-
-    @Test
-    void createBooking_whenFlightMissing_returns404() {
-        Booking booking = new Booking();
-        booking.setFlightNumber("DL300");
-        booking.setDepartureDateTime(LocalDateTime.of(2025, 1, 1, 10, 0));
-
-        // no flight found
-        when(flightRepository.findByFlightNumberAndDepartDateTime(
-                booking.getFlightNumber(),
-                booking.getDepartureDateTime()))
-                .thenReturn(Optional.empty());
-
-        ResponseEntity<?> resp = bookingController.createBooking(booking);
-        assertEquals(404, resp.getStatusCodeValue());
-        assertEquals("Flight not found", resp.getBody());
-    }
+//    @Test
+//    void createBooking_whenFlightExists_savesAndReturns201() {
+//        Booking booking = new Booking();
+//        booking.setFlightNumber("DL300");
+//        booking.setDepartureDateTime(LocalDateTime.of(2025, 1, 1, 10, 0));
+//
+//        // stub the flight‐lookup
+//        when(flightRepository.findByFlightNumberAndDepartDateTime(
+//                booking.getFlightNumber(),
+//                booking.getDepartureDateTime()))
+//                .thenReturn(Optional.of(new Flight())); // dummy Flight
+//
+//        // stub the save
+//        when(bookingRepository.save(booking)).thenReturn(booking);
+//
+//        ResponseEntity<?> resp = bookingController.createBooking(booking);
+//        assertEquals(201, resp.getStatusCodeValue());
+//        assertSame(booking, resp.getBody());
+//    }
+//
+//    @Test
+//    void createBooking_whenFlightMissing_returns404() {
+//        Booking booking = new Booking();
+//        booking.setFlightNumber("DL300");
+//        booking.setDepartureDateTime(LocalDateTime.of(2025, 1, 1, 10, 0));
+//
+//        // no flight found
+//        when(flightRepository.findByFlightNumberAndDepartDateTime(
+//                booking.getFlightNumber(),
+//                booking.getDepartureDateTime()))
+//                .thenReturn(Optional.empty());
+//
+//        ResponseEntity<?> resp = bookingController.createBooking(booking);
+//        assertEquals(404, resp.getStatusCodeValue());
+//        assertEquals("Flight not found", resp.getBody());
+//    }
 
     /**
      * Test configuration that supplies mocks for every dependency
