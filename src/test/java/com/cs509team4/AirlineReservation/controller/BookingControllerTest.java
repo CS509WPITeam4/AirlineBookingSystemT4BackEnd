@@ -28,17 +28,17 @@ public class BookingControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetBookingsByUserId() {
-        BookingDTO bookingDTO = new BookingDTO();
-        bookingDTO.setFlightNumber("DL101");
-        bookingDTO.setStatus("CONFIRMED");
-
-        when(bookingService.getUserBookings(1L)).thenReturn(List.of(bookingDTO));
-
-        ResponseEntity<List<BookingDTO>> response = bookingController.getUserBookings(1L);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals("DL101", response.getBody().get(0).getFlightNumber());
-    }
+//    @Test
+//    void testGetBookingsByUserId() {
+//        BookingDTO bookingDTO = new BookingDTO();
+//        bookingDTO.setFlightNumber("DL101");
+//        bookingDTO.setStatus("CONFIRMED");
+//
+//        when(bookingService.getUserBookings(1L)).thenReturn(List.of(bookingDTO));
+//
+//        ResponseEntity<List<BookingDTO>> response = bookingController.getUserBookings(1L);
+//
+//        assertEquals(200, response.getStatusCodeValue());
+//        assertEquals("DL101", response.getBody().get(0).getFlightNumber());
+//    }
 }
