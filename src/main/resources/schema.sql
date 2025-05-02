@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS reservations;
-DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS bookingflight;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS `southwests`;
 DROP TABLE IF EXISTS `deltas`;
 
@@ -35,15 +36,16 @@ CREATE TABLE IF NOT EXISTS reservations (
 
 CREATE TABLE IF NOT EXISTS bookings (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    flight_number VARCHAR(50) NOT NULL,
-    depart_airport VARCHAR(255) NOT NULL,
-    arrive_airport VARCHAR(255) NOT NULL,
-    depart_datetime DATETIME NOT NULL,
-    arrive_datetime DATETIME NOT NULL,
-    status VARCHAR(50) DEFAULT 'Confirmed',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bookingflight (
+     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+     booking_id BIGINT NOT NULL,
+     flight_id BIGINT NOT NULL,
+     leg_type ENUM('DEPARTURE', 'RETURN') NOT NULL,
+     sequence INT NOT NULL,
+     FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE
 );
 
 CREATE TABLE `deltas` (

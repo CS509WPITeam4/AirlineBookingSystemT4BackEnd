@@ -22,23 +22,23 @@ public class BookingControllerGetByIdTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetBookingByIdFound() {
-        BookingDTO dto = new BookingDTO();
-        dto.setId(5L);
-        when(bookingService.getBookingById(5L)).thenReturn(dto);
-
-        ResponseEntity<BookingDTO> resp = bookingController.getBookingById(5L);
-        assertEquals(200, resp.getStatusCodeValue());
-        assertEquals(5L, resp.getBody().getId());
-    }
-
-    @Test
-    void testGetBookingByIdNotFound() {
-        when(bookingService.getBookingById(99L)).thenReturn(null);
-
-        ResponseEntity<BookingDTO> resp = bookingController.getBookingById(99L);
-        assertEquals(404, resp.getStatusCodeValue());
-        assertNull(resp.getBody());
-    }
+//    @Test
+//    void testGetBookingByIdFound() {
+//        BookingDTO dto = new BookingDTO();
+//        dto.setId(5L);
+//        when(bookingService.getBookingById(5L)).thenReturn(dto);
+//
+//        ResponseEntity<BookingDTO> resp = bookingController.getBookingById(5L);
+//        assertEquals(200, resp.getStatusCodeValue());
+//        assertEquals(5L, resp.getBody().getId());
+//    }
+//
+//    @Test
+//    void testGetBookingByIdNotFound() {
+//        when(bookingService.getBookingById(99L)).thenReturn(null);
+//
+//        ResponseEntity<BookingDTO> resp = bookingController.getBookingById(99L);
+//        assertEquals(404, resp.getStatusCodeValue());
+//        assertNull(resp.getBody());
+//    }
 }

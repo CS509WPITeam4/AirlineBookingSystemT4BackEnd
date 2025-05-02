@@ -1,11 +1,10 @@
 package com.cs509team4.AirlineReservation;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "bookings")
@@ -15,28 +14,20 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private String flightNumber;
-    private String departureAirport;
-    private String arrivalAirport;
-    private LocalDateTime departureDateTime;
-    private LocalDateTime arrivalDateTime;
-    private String status; // Confirmed, Canceled
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "booking" /*, cascade = CascadeType.ALL */)
+    private List<BookingFlight> bookingFlights = new ArrayList<>();
 
     // Default constructor
     public Booking() {
     }
 
     // Parameterized constructor
-    public Booking(Long userId, String flightNumber, String departureAirport, String arrivalAirport,
-                   LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, String status) {
-        this.userId = userId;
-        this.flightNumber = flightNumber;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.departureDateTime = departureDateTime;
-        this.arrivalDateTime = arrivalDateTime;
-        this.status = status;
+    public Booking(Long id, List<BookingFlight> bookingFlights) {
+        this.id = id;
+        this.bookingFlights = bookingFlights;
     }
 
     // Getters and Setters
@@ -48,73 +39,20 @@ public class Booking {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public List<BookingFlight> getBookingFlights() {
+        return bookingFlights;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void addBookingFlight(BookingFlight bf) {
+        bookingFlights.add(bf);
+        bf.setBooking(this); // maintain bidirectional link
     }
 
-    public String getFlightNumber() {
-        return flightNumber;
-    }
-
-    public void setFlightNumber(String flightNumber) {
-        this.flightNumber = flightNumber;
-    }
-
-    public String getDepartureAirport() {
-        return departureAirport;
-    }
-
-    public void setDepartureAirport(String departureAirport) {
-        this.departureAirport = departureAirport;
-    }
-
-    public String getArrivalAirport() {
-        return arrivalAirport;
-    }
-
-    public void setArrivalAirport(String arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
-    }
-
-    public LocalDateTime getDepartureDateTime() {
-        return departureDateTime;
-    }
-
-    public void setDepartureDateTime(LocalDateTime departureDateTime) {
-        this.departureDateTime = departureDateTime;
-    }
-
-    public LocalDateTime getArrivalDateTime() {
-        return arrivalDateTime;
-    }
-
-    public void setArrivalDateTime(LocalDateTime arrivalDateTime) {
-        this.arrivalDateTime = arrivalDateTime;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", flightNumber='" + flightNumber + '\'' +
-                ", departureAirport='" + departureAirport + '\'' +
-                ", arrivalAirport='" + arrivalAirport + '\'' +
-                ", departureDateTime=" + departureDateTime +
-                ", arrivalDateTime=" + arrivalDateTime +
-                ", status='" + status + '\'' +
-                '}';
-    }
 }
+
+// Old insert statement
+//INSERT INTO bookings (user_id, flight_number, depart_airport, arrive_airport, depart_datetime, arrive_datetime, status) VALUES
+//(1, 'DL123', 'JFK', 'LAX', '2025-05-01 08:00:00', '2025-05-01 11:00:00', 'Confirmed'),
+//        (2, 'UA456', 'ORD', 'SFO', '2025-05-02 09:30:00', '2025-05-02 12:15:00', 'Confirmed'),
+//        (4, 'AA101', 'DFW', 'SEA', '2025-05-04 07:45:00', '2025-05-04 10:30:00', 'Confirmed'),
+//        (5, 'BA202', 'MIA', 'BOS', '2025-05-05 17:00:00', '2025-05-05 20:00:00', 'Confirmed');
