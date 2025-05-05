@@ -97,10 +97,6 @@ public class FlightController {
             @RequestParam(required = false) int id,
             @RequestParam(required = false) String flightNum) {
 
-        if (flightNum == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         Flight flight;
         flight = flightRepository.getFlight(id);
 
