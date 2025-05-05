@@ -29,19 +29,9 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(booking.getId());
     }
 
-//    @GetMapping("/user/{userId}")
-//    public ResponseEntity<List<BookingDTO>> getUserBookings(@PathVariable Long userId) {
-//        List<BookingDTO> bookings = bookingService.getUserBookings(userId);
-//        return ResponseEntity.ok(bookings);
-//    }
-//
-//    @GetMapping("/{bookingId}")
-//    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long bookingId) {
-//        BookingDTO booking = bookingService.getBookingById(bookingId);
-//        if (booking != null) {
-//            return ResponseEntity.ok(booking);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    @GetMapping("/retrieve")
+    public ResponseEntity<List<BookingDTO>> getAllBookings() {
+        List<BookingDTO> bookings = bookingService.getUserBookings();
+        return ResponseEntity.ok(bookings);
+    }
 }

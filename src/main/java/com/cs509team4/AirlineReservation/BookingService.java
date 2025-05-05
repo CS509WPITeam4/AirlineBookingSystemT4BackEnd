@@ -21,19 +21,6 @@ public class BookingService {
         this.bookingFlightRepository = bookingFlightRepository;
     }
 
-//    public List<BookingDTO> getUserBookings(Long userId) {
-//        List<Booking> bookings = bookingRepository.findByUserId(userId);
-//        return bookings.stream()
-//                .map(BookingDTO::fromBooking)
-//                .collect(Collectors.toList());
-//    }
-//
-//    public BookingDTO getBookingById(Long bookingId) {
-//        return bookingRepository.findById(bookingId)
-//                .map(BookingDTO::fromBooking)
-//                .orElse(null);
-//    }
-
     @Transactional
     public Booking createBooking(List<FlightDTO> departures, List<FlightDTO> returns) {
         Booking booking = bookingRepository.save(new Booking());
@@ -64,5 +51,29 @@ public class BookingService {
         bookingFlightRepository.saveAll(bfs);
 
         return booking;
+    }
+
+    public List<BookingDTO> getUserBookings() {
+        List<Booking> bookings = bookingRepository.findAll();
+        List<BookingDTO> result = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            List<BookingFlight> bookingFlights = bookingFlightRepository.findAllByBookingId(booking.getId());
+
+            List<Long> departures = new ArrayList<>();
+            List<Long> returns = new ArrayList<>();
+
+            for (BookingFlight bf : bookingFlights) {
+                if (bf.getLegType() == LegType.DEPARTURE) {
+                    departures.add(bf.getFlightId());
+                } else if (bf.getLegType() == LegType.RETURN) {
+                    returns.add(bf.getFlightId());
+                }
+            }
+
+            result.add(new BookingDTO(departures, returns));
+        }
+
+        return result;
     }
 }
