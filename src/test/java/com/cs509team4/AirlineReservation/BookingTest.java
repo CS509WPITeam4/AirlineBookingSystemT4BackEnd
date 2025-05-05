@@ -2,27 +2,30 @@ package com.cs509team4.AirlineReservation;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BookingTest {
+class BookingTest {
+    @Test
+    void testIdAndBookingFlights() {
+        Booking booking = new Booking();
+        assertNull(booking.getId());
+        BookingFlight bf = new BookingFlight();
+        bf.setFlightId(99L);
+        bf.setLegType(LegType.DEPARTURE);
+        booking.addBookingFlight(bf);
 
-//    @Test
-//    void testGettersAndSetters() {
-//        Booking b = new Booking();
-//        b.setId(7L);
-//        b.setUserId(20L);
-//        b.setFlightNumber("WN200");
-//        b.setDepartureAirport("BOS");
-//        b.setArrivalAirport("MIA");
-//        b.setDepartureDateTime(LocalDateTime.of(2025,2,1,8,30));
-//        b.setArrivalDateTime(LocalDateTime.of(2025,2,1,11,30));
-//        b.setStatus("PENDING");
-//
-//        assertEquals(7L, b.getId());
-//        assertEquals("WN200", b.getFlightNumber());
-//        assertEquals("PENDING", b.getStatus());
-//        assertTrue(b.toString().contains("WN200"));
-//    }
+        // after adding, bookingFlights contains bf and bf.getBooking()==booking
+        assertEquals(1, booking.getBookingFlights().size());
+        assertSame(booking, booking.getBookingFlights().get(0).getBooking());
+    }
+
+    @Test
+    void testParamCtor() {
+        BookingFlight bf = new BookingFlight();
+        Booking booking = new Booking(123L, List.of(bf));
+        assertEquals(123L, booking.getId());
+        assertEquals(1, booking.getBookingFlights().size());
+    }
 }

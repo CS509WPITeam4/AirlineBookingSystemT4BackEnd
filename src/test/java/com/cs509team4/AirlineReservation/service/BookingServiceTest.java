@@ -1,43 +1,70 @@
 package com.cs509team4.AirlineReservation.service;
 
-import com.cs509team4.AirlineReservation.Booking;
-import com.cs509team4.AirlineReservation.BookingDTO;
-import com.cs509team4.AirlineReservation.BookingRepository;
-import com.cs509team4.AirlineReservation.BookingService;
+import com.cs509team4.AirlineReservation.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-public class BookingServiceTest {
+class BookingServiceTest {
 
     @Mock
-    private BookingRepository bookingRepository;
-
+    BookingRepository bookingRepository;
+    @Mock
+    BookingFlightRepository bookingFlightRepository;
     @InjectMocks
-    private BookingService bookingService;
+    BookingService bookingService;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-//    @Test
-//    void testGetUserBookings() {
-//        Booking booking = new Booking(1L, "DL101", "JFK", "SFO",
-//                LocalDateTime.now(), LocalDateTime.now().plusHours(6), "CONFIRMED");
-//
-//        when(bookingRepository.findByUserId(1L)).thenReturn(List.of(booking));
-//
-//        List<BookingDTO> bookings = bookingService.getUserBookings(1L);
-//        assertEquals(1, bookings.size());
-//        assertEquals("DL101", bookings.get(0).getFlightNumber());
-//    }
+    @Test
+    void createBooking_savesBooking_andSavesAllFlights() {
+
+        Booking savedBooking = new Booking();
+        savedBooking.setId(99L);
+        when(bookingRepository.save(any(Booking.class))).thenReturn(savedBooking);
+
+        FlightDTO d1 = new FlightDTO(); d1.setId(10);
+        FlightDTO d2 = new FlightDTO(); d2.setId(20);
+        FlightDTO r1 = new FlightDTO(); r1.setId(30);
+
+        Booking result = bookingService.createBooking(
+                List.of(d1, d2),
+                List.of(r1)
+        );
+
+        assertSame(savedBooking, result);
+
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<List<BookingFlight>> captor =
+                ArgumentCaptor.forClass(List.class);
+
+        verify(bookingFlightRepository).saveAll(captor.capture());
+        List<BookingFlight> flights = captor.getValue();
+
+        assertEquals(3, flights.size());
+
+        BookingFlight bf0 = flights.get(0);
+        assertEquals(10L, bf0.getFlightId());
+        assertEquals(LegType.DEPARTURE, bf0.getLegType());
+        assertEquals(1, bf0.getSequence());
+
+        BookingFlight bf1 = flights.get(1);
+        assertEquals(20L, bf1.getFlightId());
+        assertEquals(LegType.DEPARTURE, bf1.getLegType());
+        assertEquals(2, bf1.getSequence());
+
+        BookingFlight bf2 = flights.get(2);
+        assertEquals(30L, bf2.getFlightId());
+        assertEquals(LegType.RETURN, bf2.getLegType());
+        assertEquals(1, bf2.getSequence());
+    }
 }

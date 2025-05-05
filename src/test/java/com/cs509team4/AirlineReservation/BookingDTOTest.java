@@ -2,31 +2,30 @@ package com.cs509team4.AirlineReservation;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BookingDTOTest {
+class BookingDTOTest {
 
-//    @Test
-//    void testGettersSettersAndToBooking() {
-//        BookingDTO dto = new BookingDTO();
-//        dto.setId(5L);
-//        dto.setUserId(12L);
-//        dto.setFlightNumber("AA500");
-//        dto.setDepartureAirport("JFK");
-//        dto.setArrivalAirport("LAX");
-//        dto.setDepartureDateTime(LocalDateTime.of(2025,5,10,9,0));
-//        dto.setArrivalDateTime(LocalDateTime.of(2025,5,10,12,0));
-//        dto.setStatus("CONFIRMED");
-//
-//        assertEquals(5L, dto.getId());
-//        assertEquals("AA500", dto.getFlightNumber());
-//        assertEquals("JFK", dto.getDepartureAirport());
-//        assertEquals("CONFIRMED", dto.getStatus());
-//
-//        Booking entity = dto.toBooking();
-//        assertEquals(12L, entity.getUserId());
-//        assertEquals("AA500", entity.getFlightNumber());
-//    }
+    @Test
+    void noArgConstructor_andSettersGetters() {
+        BookingDTO dto = new BookingDTO();
+        dto.setDepartures(List.of(5L, 6L));
+        dto.setReturns(List.of(7L, 8L));
+
+        assertEquals(List.of(5L,6L), dto.getDepartures());
+        assertEquals(List.of(7L,8L), dto.getReturns());
+    }
+
+    @Test
+    void allArgsConstructor_andGetters() {
+        BookingDTO dto = new BookingDTO(
+                List.of(1L,2L),
+                List.of(3L)
+        );
+
+        assertEquals(List.of(1L,2L), dto.getDepartures());
+        assertEquals(List.of(3L), dto.getReturns());
+    }
 }
