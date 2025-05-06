@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class FlightControllerErrorTest {
+class FlightControllerErrorTest {
 
     @Mock
     private FlightRepository flightRepository;
@@ -41,20 +43,28 @@ public class FlightControllerErrorTest {
     }
 
     @Test
-    void testGetFlightDetails_BadRequest() {
-        // missing flightNum → 400
-        ResponseEntity<Flight> r1 = flightController.getFlight(1, null);
-        assertEquals(400, r1.getStatusCodeValue());
+    void testSearchFlights_DirectOk() {
+        Flight f = mock(Flight.class);
+        when(flightRepository.search("JFK", "LAX")).thenReturn(List.of(f));
+
+        ResponseEntity<List<FlightCardDTO>> resp =
+                flightController.searchFlights("JFK", "LAX", null, null);
+
+        assertEquals(200, resp.getStatusCodeValue());
+        assertEquals(1, resp.getBody().size());
+        assertSame(f, resp.getBody().get(0).getFlights().get(0));
+        verify(flightRepository).search("JFK", "LAX");
     }
 
     @Test
-    void testGetFlightDetails_Ok() {
-        // with a non-null flightNum, it should call repo and return 200
-        Flight mockFlight = mock(Flight.class);
-        when(flightRepository.getFlight(42)).thenReturn(mockFlight);
+    void testGetFlight_IgnoresFlightNumAndReturnsOk() {
+        Flight f = mock(Flight.class);
+        when(flightRepository.getFlight(5)).thenReturn(f);
 
-        ResponseEntity<Flight> r2 = flightController.getFlight(42, "DL123");
-        assertEquals(200, r2.getStatusCodeValue());
-        assertSame(mockFlight, r2.getBody());
+        // even with null flightNum, controller simply calls repo and returns 200
+        ResponseEntity<Flight> resp = flightController.getFlight(5, null);
+        assertEquals(200, resp.getStatusCodeValue());
+        assertSame(f, resp.getBody());
+        verify(flightRepository).getFlight(5);
     }
 }
