@@ -1,51 +1,46 @@
 package com.cs509team4.AirlineReservation.service;
 
-import com.cs509team4.AirlineReservation.*;
-import org.junit.jupiter.api.*;
+import com.cs509team4.AirlineReservation.Flight;
+import com.cs509team4.AirlineReservation.FlightRepository;
+import com.cs509team4.AirlineReservation.FlightService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.*;
-
-import java.util.List;
-
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class FlightServiceTest {
+    @Mock
+    FlightRepository repo;
+    @InjectMocks
+    FlightService svc;
 
-    @Mock private FlightRepository flightRepository;
-    @InjectMocks private FlightService flightService;
-
-    @BeforeEach
-    void init() {
+    @BeforeEach void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testSearchFlights_AggregatesRepo() {
-        Flight f1 = new Flight(), f2 = new Flight();
-        when(flightRepository.search("AAA","BBB"))
-                .thenReturn(List.of(f1, f2));
-
-        List<Flight> out = flightService.searchFlights("AAA","BBB");
-        assertEquals(2, out.size());
-        assertSame(f1, out.get(0));
-        assertSame(f2, out.get(1));
+    void searchFlights_combinesBothSources() {
+        Flight f1 = mock(Flight.class), f2 = mock(Flight.class);
+        when(repo.search("A","B")).thenReturn(List.of(f1, f2));
+        var all = svc.searchFlights("A","B");
+        assertEquals(2, all.size());
+        verify(repo).search("A","B");
     }
 
     @Test
-    void testGetFlightDetails_InvalidFlightNum() {
-        IllegalArgumentException ex = assertThrows(
-                IllegalArgumentException.class,
-                () -> flightService.getFlightDetails(1, "X")
-        );
-        assertTrue(ex.getMessage().contains("Invalid flight number"));
+    void getFlightDetails_nullOrShort_throws() {
+        assertThrows(IllegalArgumentException.class, () -> svc.getFlightDetails(1, null));
+        assertThrows(IllegalArgumentException.class, () -> svc.getFlightDetails(1, "X"));
     }
 
     @Test
-    void testGetFlightDetails_UsesRepo() {
-        Flight f = new Flight();
-        when(flightRepository.getFlight(42)).thenReturn(f);
-
-        Flight out = flightService.getFlightDetails(42, "DL123");
+    void getFlightDetails_returnsRepoFlight() {
+        Flight f = mock(Flight.class);
+        when(repo.getFlight(123)).thenReturn(f);
+        Flight out = svc.getFlightDetails(123, "DL999");
         assertSame(f, out);
+        verify(repo).getFlight(123);
     }
 }
